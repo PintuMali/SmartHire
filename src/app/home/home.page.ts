@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Images } from '../app.model';
+import { HomeService } from '../app.service';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
-  constructor() {}
+  images:Images[];
+  constructor(private imageService:HomeService) {
+    this.images=imageService.images;
+  }
 
 }

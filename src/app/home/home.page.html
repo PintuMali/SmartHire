@@ -6,7 +6,7 @@
  <ion-grid>
   <ion-row>
     <ion-col size="8" offset="2">
-      <ion-img src="../../assets/icon/Work.svg"></ion-img>
+      <ion-img [src]="[images[0].imageUrl]"></ion-img>
       <label class="ion-padding">
         <h1>What is Smart Hire?</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -21,7 +21,7 @@
  </ion-grid>
 
   </ion-slide>
-  <ion-slide>
+  <ion-slide class="back">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -40,20 +40,20 @@
         </ion-col>
         </ion-row>
         <ion-row>
-      <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="2" offset-lg="5">
-          <ion-img src="../../assets/icon/SmartHire.svg" ></ion-img>
+      <ion-col size="6" offset="3" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="2" offset-lg="5">
+          <ion-img [src]="[images[2].imageUrl]" ></ion-img>
           </ion-col>
           </ion-row>
           <ion-row>
           <ion-col>
-          <label>
+          <label class="ion-padding-vertical">
             <a routerLink="/employee">Continue<!-- <ion-icon name="arrow-forward-outline" slot="icon-only"></ion-icon>--></a>
           </label>
         </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="2" offset-lg="5">
-            <ion-img src="../../assets/icon/boyonwork.svg"></ion-img>
+          <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="4" offset-lg="4">
+            <ion-img [src]="images[1].imageUrl"></ion-img>
           </ion-col>
         </ion-row>
         <ion-row>
