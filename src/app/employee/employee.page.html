@@ -8,7 +8,6 @@
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
     <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -17,27 +16,32 @@
     <ion-row>
       <ion-col>
         <ion-card style="position: relatives;">
-          <ion-img src="../../assets/icon/boyonwork.svg" style="height:230px;"></ion-img>
+          <ion-img  [routerLink]="['/employee',
+          jobs[0].jobId]" [src]="[jobs[0].imgUrl]"></ion-img>
         </ion-card>
         <ion-row>
           <ion-col size="2.5" size-sm="2" offset="1" offset-sm="2.5">
-        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-20px;">
-          <ion-img src="../../assets/icon/Loading-Background.svg"></ion-img>
+        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
+          <ion-img [src]="jobs[0].childImgUrl.img1"></ion-img>
         </ion-avatar></ion-col>
-
           <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img src="../../assets/icon/Loading-Background.svg"></ion-img>
+          <ion-img [src]="[jobs[0].childImgUrl.img2]"></ion-img>
         </ion-avatar></ion-col>
         <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img src="../../assets/icon/Loading-Background.svg"></ion-img>
+          <ion-img [src]="[jobs[0].childImgUrl.img3]"></ion-img>
         </ion-avatar></ion-col>
         <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img src="../../assets/icon/Loading-Background.svg"></ion-img>
+          <ion-img [src]="[jobs[0].childImgUrl.img4]"></ion-img>
         </ion-avatar>
       </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" style="position: absolute; top:60%; right: 5%;" class="ion-text-end">
+          <ion-button size="default" (click)="onMoreDetail(jobs[0].jobId)">More details</ion-button>
+        </ion-col>
       </ion-row>
       </ion-col>
     </ion-row>
@@ -60,17 +64,65 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-card>
-          <ion-img src="../../assets/icon/boyonwork.svg"></ion-img>
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card>
-          <ion-img src="../../assets/icon/boyonwork.svg"></ion-img>
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
         </ion-card>
       </ion-col>
 
     </ion-row>
+    <ion-row>
+      <ion-col class="ion-margin-top">
+        <ion-label class="ion-text-center">
+          <p>POPULAR CATEGORIES</p>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <a routerLink="/employee/jobs">View all jobs</a>
+      </ion-col>
+    </ion-row>
   </ion-grid>
-
+    <ion-grid>
+      <ion-row>
+        <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
+          <ion-item>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
+        <ion-item>
+        </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
+      <ion-item>
+      </ion-item>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col size="12" class="ion-text-center">
+    <a routerLink="/employee/jobs">View all jobs</a>
+  </ion-col>
+</ion-row>
+  </ion-grid>
 </ion-content>

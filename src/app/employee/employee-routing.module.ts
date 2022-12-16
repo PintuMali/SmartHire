@@ -8,10 +8,13 @@ const routes: Routes = [
     path: '',
     component: EmployeePage
   },
-
   {
     path: 'jobs',
     loadChildren: () => import('./jobs/jobs.module').then( m => m.JobsPageModule)
+  },
+  {
+    path: ':jobId',
+    loadChildren: () => import('./jobs/job-details/job-details.module').then( m => m.JobDetailsPageModule)
   },
   {
     path: 'search-bar',

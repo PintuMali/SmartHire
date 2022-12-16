@@ -9,7 +9,7 @@ const routes: Routes = [
     component: JobsPage
   },
   {
-    path: 'job-details',
+    path: ':jobId',
     loadChildren: () => import('./job-details/job-details.module').then( m => m.JobDetailsPageModule)
   }
 ];
