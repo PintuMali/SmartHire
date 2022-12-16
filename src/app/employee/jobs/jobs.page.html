@@ -1,9 +1,14 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/employee"></ion-back-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>jobs</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Jobs</ion-title>
   </ion-toolbar>
 </ion-header>
 
