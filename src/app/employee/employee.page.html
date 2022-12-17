@@ -15,7 +15,7 @@
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col>
-        <ion-card style="position: relatives;">
+        <ion-card style="position: relatives;" class="ion-margin-horizontal ion-margin-vertical">
           <ion-img  [routerLink]="['/employee',
           jobs[0].jobId]" [src]="[jobs[0].imgUrl]"></ion-img>
         </ion-card>
@@ -65,25 +65,14 @@
     <div class="scrolling-wrapper">
       <div class="cards">
     <ion-row class="flex-container">
-      <ion-col size="6">
+      <ion-col size="6" *ngFor="let city of cities">
         <ion-card class="ion-padding">
-          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
+          <ion-img [src]="[city.cityImgUrl]" (click)="onCityClick(city.id)"></ion-img>
         </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
-        </ion-card>
+       <ion-card class="ion-text-center ion-padding-vertical" style="position: relative;bottom:75px; background: rgba(255,0,0,0.6);color: white; font-weight: bolder;">
+        <ion-header>{{city.cityName}}</ion-header>
+       </ion-card>
+
       </ion-col>
     </ion-row>
   </div>
@@ -98,24 +87,9 @@
     <div class="scrolling-wrapper">
       <div class="cards">
     <ion-row class="flex-container">
-      <ion-col size="6">
+      <ion-col size="6" *ngFor="let city of cities">
         <ion-card class="ion-padding">
-          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card class="ion-padding">
-          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
+          <ion-img [src]="[city.cityImgUrl]"></ion-img>
         </ion-card>
       </ion-col>
     </ion-row>
