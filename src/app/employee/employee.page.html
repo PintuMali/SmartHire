@@ -62,7 +62,9 @@
         </ion-label>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <div class="scrolling-wrapper">
+      <div class="cards">
+    <ion-row class="flex-container">
       <ion-col size="6">
         <ion-card class="ion-padding">
           <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
@@ -73,8 +75,19 @@
           <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
         </ion-card>
       </ion-col>
-
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
     </ion-row>
+  </div>
+  </div>
     <ion-row>
       <ion-col class="ion-margin-top">
         <ion-label class="ion-text-center">
@@ -82,7 +95,19 @@
         </ion-label>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <div class="scrolling-wrapper">
+      <div class="cards">
+    <ion-row class="flex-container">
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-padding">
+          <ion-img src="../../assets/images//boyonwork.svg"></ion-img>
+        </ion-card>
+      </ion-col>
       <ion-col size="6">
         <ion-card class="ion-padding">
           <ion-img src="../../assets/images/boyonwork.svg"></ion-img>
@@ -94,6 +119,9 @@
         </ion-card>
       </ion-col>
     </ion-row>
+  </div>
+  </div>
+
     <ion-row>
       <ion-col size="12" class="ion-text-center">
         <a routerLink="/employee/jobs">View all jobs</a>
@@ -102,20 +130,32 @@
   </ion-grid>
     <ion-grid>
       <ion-row>
-        <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
-          <ion-item>
+        <ion-col size="10" offset="1" class="ion-margin-top">
+          <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="jobs[0].imgUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>Minimum CTC of 3 LPA</ion-label>
           </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
-        <ion-item>
+      <ion-col size="10" offset="1" class="ion-margin-top">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="jobs[0].imgUrl"></ion-img>
+          </ion-thumbnail>
+          <ion-label>Minimum CTC of 3 LPA</ion-label>
         </ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col size="10" offset="1"  style="background-color: red;" class="ion-margin-top">
-      <ion-item>
+    <ion-col size="10" offset="1" class="ion-margin-top">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="jobs[0].imgUrl"></ion-img>
+        </ion-thumbnail>
+        <ion-label>Minimum CTC of 3 LPA</ion-label>
       </ion-item>
   </ion-col>
 </ion-row>
