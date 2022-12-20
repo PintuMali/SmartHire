@@ -3,10 +3,107 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/employee"></ion-back-button>
     </ion-buttons>
-    <ion-title>job-details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Job-details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+<ion-grid>
+  <ion-row class="ion-align-items-center">
+    <ion-col size="10" class="ion-text-start">
+      <ion-row>
+        <ion-col> <ion-card-title>Front End Developer</ion-card-title></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col> <ion-card-subtitle>Facebook</ion-card-subtitle></ion-col>
+      </ion-row>
 
+    </ion-col>
+    <ion-col size="2" class="ion-text-end">
+      <ion-thumbnail class="ion-float-end">
+        <ion-img src="../../../../assets/images/learn.svg"></ion-img>
+      </ion-thumbnail>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="5">
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>mumbai</ion-text></ion-item>
+    </ion-col>
+    <ion-col size="5">
+  <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>6000 / month</ion-text></ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="5">
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>3 Months</ion-text></ion-item>
+    </ion-col>
+    <ion-col size="5">
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>java</ion-text></ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-icon name="chatbox-outline"></ion-icon><ion-text>Applications</ion-text></ion-item></ion-col>
+    <ion-col size="6"><ion-item lines="none" class="ion-float-end"><ion-buttons><ion-icon name="bookmark-outline"></ion-icon><ion-icon name="share-social-outline"></ion-icon></ion-buttons></ion-item></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h5>About the Job</h5>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6>Job Description:</h6>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing
+        elit. Doloremque pariatur esse asperiores
+         ducimus labore commodi error molestias ipsum
+          ipsam, soluta expedita, dolore fugit illum
+           odio distinctio veniam magnam saepe accusamus!</p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6>Skills Required:</h6>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="6">
+      <ion-row class="ion-justify-content-between">
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+        <ion-col size="4">
+          <ion-badge>Java</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6>Experience Required:</h6>
+      <p>Minimun 2-3 Years</p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button expand="block">Apply now</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>
