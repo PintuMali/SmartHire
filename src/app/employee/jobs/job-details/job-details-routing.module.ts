@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from 'src/app/auth/auth.guard';
 
 import { JobDetailsPage } from './job-details.page';
 
@@ -9,13 +10,10 @@ const routes: Routes = [
     component: JobDetailsPage
   },
   {
-    path: 'resume-submit',
-    loadChildren: () => import('./resume-submit/resume-submit.module').then( m => m.ResumeSubmitPageModule)
-  },
-  {
-    path: 'resume-test',
-    loadChildren: () => import('./resume-test/resume-test.module').then( m => m.ResumeTestPageModule)
+    path: 'resume-submission',
+    loadChildren: () => import('./resume-submission/resume-submission.module').then( m => m.ResumeSubmissionPageModule),canLoad:[AuthGuard]
   }
+
 ];
 
 @NgModule({
