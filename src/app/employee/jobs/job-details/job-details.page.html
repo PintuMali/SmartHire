@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/employee"></ion-back-button>
+      <ion-back-button routerLink="/employee" defaultHref="/employee"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button routerLink="/employee/jobs">
@@ -102,7 +102,7 @@
   </ion-row>
   <ion-row>
     <ion-col size="12">
-      <ion-button expand="block">Apply now</ion-button>
+      <ion-button expand="block" (click)="onApplyClick()">Apply now</ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

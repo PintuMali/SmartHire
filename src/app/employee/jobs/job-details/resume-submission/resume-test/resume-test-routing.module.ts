@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: ResumeTestPage
-  },
-  {
-    path: 'test-result',
-    loadChildren: () => import('./test-result/test-result.module').then( m => m.TestResultPageModule)
   }
 ];
 

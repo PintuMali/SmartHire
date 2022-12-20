@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ResumeSubmitPageRoutingModule } from './resume-submit-routing.module';
+import { JobApplyPageRoutingModule } from './job-apply-routing.module';
 
-import { ResumeSubmitPage } from './resume-submit.page';
+import { JobApplyPage } from './job-apply.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ResumeSubmitPageRoutingModule
+    JobApplyPageRoutingModule
   ],
-  declarations: [ResumeSubmitPage]
+  declarations: [JobApplyPage]
 })
-export class ResumeSubmitPageModule {}
+export class JobApplyPageModule {}
