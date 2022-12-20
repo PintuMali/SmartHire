@@ -13,12 +13,16 @@ const routes: Routes = [
     loadChildren: () => import('./jobs/jobs.module').then( m => m.JobsPageModule)
   },
   {
-    path: ':jobId',
-    loadChildren: () => import('./jobs/job-details/job-details.module').then( m => m.JobDetailsPageModule)
-  },
-  {
     path: 'search-bar',
     loadChildren: () => import('./search-bar/search-bar.module').then( m => m.SearchBarPageModule)
+  },
+  {
+    path: 'filter/:ciId',
+    loadChildren: () => import('./jobs/jobs.module').then( m => m.JobsPageModule)
+  },
+  {
+    path: ':filter/caId',
+    loadChildren: () => import('./jobs/jobs.module').then( m => m.JobsPageModule)
   },
   {
     path: 'bookmarked-jobs',

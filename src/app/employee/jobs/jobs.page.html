@@ -1,11 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
+  <ion-toolbar *ngIf="hasSearchBarOpen">
+    <ion-searchbar style="margin-top: 20px;" show-cancel-button="always" (ionCancel)="onCancelClick($event)"  placeholder="Category,location or company..."></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!hasSearchBarOpen">
+    <ion-buttons  slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button routerLink="/employee/jobs">
+      <ion-button routerLink="/employee/jobs" (click)="onSearchBarIconClick()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Jobs</ion-title>
@@ -13,5 +22,50 @@
 </ion-header>
 
 <ion-content>
-
+<ion-card *ngFor="let job of jobs">
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-avatar>
+            <ion-img [src]="[job.imgUrl]" style="width: 100px;height: 100px;">
+            </ion-img>
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card-title>{{job.jobTitle}}</ion-card-title>
+          <ion-card-subtitle>{{job.company}}</ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.location}}</ion-text></ion-item>
+        </ion-col>
+        <ion-col size="6">
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.salary}} / month</ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.duration}} Months</ion-text></ion-item>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>java</ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button expand="block" (click)="onApply(job.jobId)">Apply</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text><span *ngIf="job.hasEnoughTime">Apply by</span><span *ngIf="!job.hasEnoughTime">Remaining</span> {{job.applybefore}} <span *ngIf="!job.hasEnoughTime">days only</span></ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
 </ion-content>

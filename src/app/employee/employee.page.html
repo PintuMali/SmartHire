@@ -65,14 +65,15 @@
     <div class="scrolling-wrapper">
       <div class="cards">
     <ion-row class="flex-container">
-      <ion-col size="6" *ngFor="let city of cities">
+      <ion-col size="4" *ngFor="let city of cities">
         <ion-card class="ion-padding">
           <ion-img [src]="[city.cityImgUrl]" (click)="onCityClick(city.id)"></ion-img>
         </ion-card>
-       <ion-card class="ion-text-center ion-padding-vertical" style="position: relative;bottom:75px; background: rgba(255,0,0,0.6);color: white; font-weight: bolder;">
-        <ion-header>{{city.cityName}}</ion-header>
-       </ion-card>
-
+        <div class="ion-text-center" style="position: absolute;top:15px; left: 15px; background: rgba(255,0,0,0.6);color: white; font-weight: bolder; width: fit-content">
+       <ion-text>
+        {{city.cityName}}
+        </ion-text>
+      </div>
       </ion-col>
     </ion-row>
   </div>
@@ -87,10 +88,14 @@
     <div class="scrolling-wrapper">
       <div class="cards">
     <ion-row class="flex-container">
-      <ion-col size="6" *ngFor="let city of cities">
+      <ion-col size="4" *ngFor="let category of categories">
         <ion-card class="ion-padding">
-          <ion-img [src]="[city.cityImgUrl]"></ion-img>
+          <ion-img [src]="[category.categoryImgUrl]" (click)="onCategoryClick(category.id)"></ion-img>
         </ion-card>
+       <ion-text style="position: absolute;top:15px;left: 15px; background: rgba(255,0,0,0.6);color: white; font-weight: bolder; width: fit-content;">
+        {{category.categoryName}}
+       </ion-text>
+
       </ion-col>
     </ion-row>
   </div>
