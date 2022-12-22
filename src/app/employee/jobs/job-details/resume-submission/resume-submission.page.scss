@@ -1,0 +1,11 @@
+ion-input[type="file"]{
+  height:50px;
+  background-color: aqua;
+  width:fit-content;
+}
+
+input[type="file"]::-webkit-file-upload-button{
+  height:50px;
+  background-color: aqua;
+  width:fit-content;
+}

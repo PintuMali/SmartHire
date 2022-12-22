@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Images } from 'src/app/app.model';
+import { HomeService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-resume-submission',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResumeSubmissionPage implements OnInit {
 
-  constructor() { }
+  images:Images[];
+  constructor(private imageService:HomeService) {
+    this.images=imageService.images;
+  }
 
   ngOnInit() {
   }
