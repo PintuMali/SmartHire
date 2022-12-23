@@ -73,3 +73,7 @@
   font-size: 18px;
   font-family:aclonica,roboto,sans-serif;
 }
+
+.ion-invalid.ion-touched ion-label{
+  color: var(--ion-color-danger);
+}
