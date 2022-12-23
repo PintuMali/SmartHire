@@ -14,7 +14,8 @@ import { AuthService } from './auth.service';
 export class AuthPage implements OnInit {
   images:Images[];
   isLoading=false;
-  isLogin=true;
+  isLogin=false;
+  defaultSelection:string='Employee';
 constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController,private imageService:HomeService){
   this.images=this.imageService.images;
 }
@@ -27,11 +28,34 @@ onLogin(){  this.isLoading=true;
     setTimeout(()=>{
       this.isLoading=false;
       loadCtrl.dismiss();
+      if(this.isLogin){
       this.router.navigateByUrl('/employee/jobs/job-details/resume-submission')
+      }
+      else{
+        this.isLogin=true;
+      }
     },1500)
   })
 }
-onSubmit(form:NgForm){}
+onSubmit(form:NgForm){
+  if(!form.valid){
+    return;
+  }
+  const email=form.value.email;
+  const password=form.value.password;
+  const role=form.value.role;
+  if(this.isLogin){
+    //data send to the login server
+  }
+  else{
+    const firstName=form.value.firstName;
+    const lastName=form.value.lastName;
+
+    //data send to the register server
+    console.log(email,password,firstName,lastName,role);
+
+  }
+}
 onSwitchAuthMode(){
 this.isLogin=!this.isLogin;
 }
