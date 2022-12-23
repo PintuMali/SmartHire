@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { Images } from '../app.model';
+import { HomeService } from '../app.service';
 import { AuthService } from './auth.service';
 
 @Component({
@@ -9,9 +12,12 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-
+  images:Images[];
   isLoading=false;
-constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController){}
+  isLogin=true;
+constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController,private imageService:HomeService){
+  this.images=this.imageService.images;
+}
   ngOnInit() {
   }
 onLogin(){  this.isLoading=true;
@@ -24,5 +30,9 @@ onLogin(){  this.isLoading=true;
       this.router.navigateByUrl('/employee/jobs/job-details/resume-submission')
     },1500)
   })
+}
+onSubmit(form:NgForm){}
+onSwitchAuthMode(){
+this.isLogin=!this.isLogin;
 }
 }
