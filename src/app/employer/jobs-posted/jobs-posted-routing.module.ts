@@ -11,7 +11,16 @@ const routes: Routes = [
   {
     path: 'applied-candidate',
     loadChildren: () => import('./applied-candidate/applied-candidate.module').then( m => m.AppliedCandidatePageModule)
+  },
+  {
+    path: 'edit-job/:jobId',
+    loadChildren: () => import('./edit-job/edit-job.module').then( m => m.EditJobPageModule)
+  },
+  {
+    path: 'post-job',
+    loadChildren: () => import('./post-job/post-job.module').then( m => m.PostJobPageModule)
   }
+
 ];
 
 @NgModule({

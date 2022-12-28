@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonItemSliding } from '@ionic/angular';
+import { Jobs } from './jobs-posted/jobs.model';
+import { JobsService } from './jobs-posted/jobs.service';
 
 @Component({
   selector: 'app-employer',
@@ -7,7 +11,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployerPage implements OnInit {
 
-  constructor() { }
 
   ngOnInit() {
   }

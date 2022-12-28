@@ -45,7 +45,7 @@
         </div>
         <ion-item class="ion-margin-top">
           <ion-label position="floating">Select the Role:</ion-label>
-          <ion-select [(ngModel)]="defaultSelection" name="role" selectedText="Employee" interface="popover">
+          <ion-select [ngModel]="'employee'" name="role" interface="popover">
             <ion-select-option value="employee">Employee</ion-select-option>
             <ion-select-option value="employer">Employer</ion-select-option>
           </ion-select>

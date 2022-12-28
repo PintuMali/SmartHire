@@ -15,7 +15,6 @@ export class AuthPage implements OnInit {
   images:Images[];
   isLoading=false;
   isLogin=false;
-  defaultSelection:string='Employee';
 constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController,private imageService:HomeService){
   this.images=this.imageService.images;
 }
