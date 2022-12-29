@@ -11,10 +11,6 @@ const routes: Routes = [
   {
     path: 'jobs-posted',
     loadChildren: () => import('./jobs-posted/jobs-posted.module').then( m => m.JobsPostedPageModule)
-  },
-  {
-    path: 'post-job',
-    loadChildren: () => import('./post-job/post-job.module').then( m => m.PostJobPageModule)
   }
 ];
 
