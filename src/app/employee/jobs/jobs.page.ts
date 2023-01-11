@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Job } from '../job.model';
-import { JobsService } from '../job.service';
+import { JobsService } from '../jobs.service';
 
 
 @Component({
