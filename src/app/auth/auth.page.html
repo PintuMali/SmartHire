@@ -55,7 +55,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="primary" expand="block" (click)="onLogin()" [disabled]="!f.valid">{{isLogin?'Login':'Register'}}</ion-button>
+        <ion-button type="submit" color="primary" expand="block" [disabled]="!f.valid">{{isLogin ? 'Login':'Signup'}}</ion-button>
         <ion-button color="primary" fill="clear" expand="block" (click)="onSwitchAuthMode()">{{isLogin?'Not Registered? Signup':'Already Registered? Login'}}</ion-button>
       </ion-col>
     </ion-row>

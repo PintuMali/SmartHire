@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { title } from "process";
-import { BehaviorSubject, delay, map, of, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, map, of, switchMap, take, tap } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { Job } from "./job.model";
 interface JobData{
@@ -69,17 +69,22 @@ export class JobsService{
   }
   addJob(companyName:string,jobProfile:string,jobSalary:number,jobDeadline:Date,jobDescription:string,jobSkills:string[],jobExperience:string,jobLocation:string,jobType:string,featureImage:[]=[]){
     let generatedJobId:string;
-    const newJob=new Job(Math.random().toString(),companyName,'../../../assets/images/glassBall.svg',jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,this.authService.userId,featureImage);
-    return this.http.post<{name:string}>('https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json',{...newJob, jobId:null})
-    .pipe(switchMap(respData=>{
+    let newJob:Job;
+    return this.authService.userId.pipe(take(1),switchMap(userId=>{
+      if(!userId){
+        throw new Error('No user id found');
+      }
+       newJob=new Job(Math.random().toString(),companyName,'../../../assets/images/glassBall.svg',jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,userId,featureImage);
+      return this.http.post<{name:string}>('https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json',{...newJob, jobId:null});
+    }),switchMap(respData=>{
       generatedJobId=respData.name;
       return this.jobs;
     }),take(1),
     tap(jobs=>{
           newJob.jobId=generatedJobId;
           this._jobs.next(jobs.concat(newJob));
-      })
-    );
+      }));
+
   }
   updateJob(jobId:string,salary:number,deadline:Date,jobDescription:string,jobSkills:[],jobExperience:string){
     let updatedJobs:Job[];

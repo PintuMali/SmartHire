@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { JobsPostedPageRoutingModule } from './jobs-posted-routing.module';
 
 import { JobsPostedPage } from './jobs-posted.page';
-import { JobComponent } from './job/job.component';
 
 @NgModule({
   imports: [
@@ -16,6 +15,6 @@ import { JobComponent } from './job/job.component';
     IonicModule,
     JobsPostedPageRoutingModule
   ],
-  declarations: [JobsPostedPage,JobComponent]
+  declarations: [JobsPostedPage]
 })
 export class JobsPostedPageModule {}
