@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
-import { Jobs } from './jobs.model';
-import { JobsService } from './jobs.service';
+import { Jobs } from 'src/app/employee/job.model';
+import { JobService } from 'src/app/employee/job.service';
 
 @Component({
   selector: 'app-jobs-posted',
@@ -12,7 +12,7 @@ import { JobsService } from './jobs.service';
 export class JobsPostedPage implements OnInit {
 
   jobs:Jobs[];
-  constructor(private jobsService:JobsService,private router:Router) {
+  constructor(private jobsService:JobService,private router:Router) {
     this.jobs=this.jobsService.jobs;
    }
 
