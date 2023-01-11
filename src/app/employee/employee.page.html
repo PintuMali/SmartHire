@@ -12,29 +12,29 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid class="ion-no-padding">
+  <ion-grid class="ion-no-padding" *ngIf="!isLoading && jobs.length>0">
     <ion-row>
       <ion-col>
         <ion-card style="position: relatives;" class="ion-margin-horizontal ion-margin-vertical">
           <ion-img  [routerLink]="['/employee',
-          jobs[0].jobId]" [src]="[jobs[0].imgUrl]"></ion-img>
+          jobs[0].jobId]" [src]="[jobs[0].companyLogo]"></ion-img>
         </ion-card>
         <ion-row>
           <ion-col size="2.5" size-sm="2" offset="1" offset-sm="2.5">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img [src]="jobs[0].childImgUrl.img1"></ion-img>
+          <ion-img [src]="[jobs[0].companyLogo]"></ion-img>
         </ion-avatar></ion-col>
           <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img [src]="[jobs[0].childImgUrl.img2]"></ion-img>
+          <ion-img [src]="[jobs[0].companyLogo]"></ion-img>
         </ion-avatar></ion-col>
         <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img [src]="[jobs[0].childImgUrl.img3]"></ion-img>
+          <ion-img [src]="[jobs[0].companyLogo]"></ion-img>
         </ion-avatar></ion-col>
         <ion-col size="2.5" size-sm="2">
         <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
-          <ion-img [src]="[jobs[0].childImgUrl.img4]"></ion-img>
+          <ion-img [src]="[jobs[0].companyLogo]"></ion-img>
         </ion-avatar>
       </ion-col>
       </ion-row>
@@ -46,6 +46,40 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-grid class="ion-no-padding" *ngIf="isLoading">
+    <ion-row>
+      <ion-col>
+        <ion-card style="position: relatives;" class="ion-margin-horizontal ion-margin-vertical">
+          <ion-skeleton-text [animated]="true" style="height: 300px;"></ion-skeleton-text>
+        </ion-card>
+        <ion-row>
+          <ion-col size="2.5" size-sm="2" offset="1" offset-sm="2.5">
+        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-avatar></ion-col>
+          <ion-col size="2.5" size-sm="2">
+        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-avatar></ion-col>
+        <ion-col size="2.5" size-sm="2">
+        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-avatar></ion-col>
+        <ion-col size="2.5" size-sm="2">
+        <ion-avatar style="position:absolute;width: 73px;height: 73px; bottom:-18px;">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-avatar>
+      </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" style="position: absolute; top:60%; right: 5%;" class="ion-text-end">
+          <ion-skeleton-text [animated]="true" style="width: 30% ;left:60%;"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-grid class="ion-margin-top" >
     <ion-row>
       <ion-col>
@@ -108,11 +142,11 @@
     </ion-row>
   </ion-grid>
     <ion-grid>
-      <ion-row>
+      <!-- <ion-row>
         <ion-col size="10" offset="1" class="ion-margin-top">
           <ion-item lines="none">
             <ion-thumbnail slot="start">
-              <ion-img [src]="jobs[0].imgUrl"></ion-img>
+              <ion-img [src]="jobs[0].companyLogo"></ion-img>
             </ion-thumbnail>
             <ion-label>Minimum CTC of 3 LPA</ion-label>
           </ion-item>
@@ -122,7 +156,7 @@
       <ion-col size="10" offset="1" class="ion-margin-top">
         <ion-item lines="none">
           <ion-thumbnail slot="start">
-            <ion-img [src]="jobs[0].imgUrl"></ion-img>
+            <ion-img [src]="jobs[0].companyLogo"></ion-img>
           </ion-thumbnail>
           <ion-label>Minimum CTC of 3 LPA</ion-label>
         </ion-item>
@@ -132,12 +166,12 @@
     <ion-col size="10" offset="1" class="ion-margin-top">
       <ion-item lines="none">
         <ion-thumbnail slot="start">
-          <ion-img [src]="jobs[0].imgUrl"></ion-img>
+          <ion-img [src]="jobs[0].companyLogo"></ion-img>
         </ion-thumbnail>
         <ion-label>Minimum CTC of 3 LPA</ion-label>
       </ion-item>
   </ion-col>
-</ion-row>
+</ion-row> -->
 <ion-row>
   <ion-col size="12" class="ion-text-center">
     <a routerLink="/employee/jobs">View all jobs</a>
