@@ -1,12 +1,16 @@
-export class Jobs{
+export class Job{
   constructor(public jobId:string,
-    public jobTitle:string,
-    public company:string,
-    public imgUrl:string,
-    public childImgUrl:{img1:string,img2:string,img3:string,img4:string},
-    public location:string,
-    public salary:number,
-    public duration:number,
-    public applybefore:string,
-    public hasEnoughTime:boolean){}
+    public companyName:string,
+    public companyLogo:string,
+    public jobProfile:string,
+    public jobSalary:number,
+    public jobDeadline:Date,
+    public jobDescription:string,
+    public jobSkills:string[],
+    public jobExperience:string,
+    public jobLocation:string,
+    public jobType:string,
+    public userId:string,
+    public featureImage?:string[],
+   ){}
 }
