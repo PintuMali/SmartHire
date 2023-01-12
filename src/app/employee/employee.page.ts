@@ -41,7 +41,7 @@ export class EmployeePage implements OnInit,OnDestroy {
     },error:errorEl=>{
       this.alertCtrl.create({
         header:'An error occurred!',
-        message:'Try again later',
+        message:'Check Your Connection,try again later',
         buttons:[{text:'Okay',handler:()=>{
           this.router.navigate(['/home']);
         }}]

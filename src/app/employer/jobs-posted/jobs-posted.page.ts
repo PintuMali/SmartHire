@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonItemSliding, LoadingController } from '@ionic/angular';
+import { AlertController, IonItemSliding, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Job } from 'src/app/employee/job.model';
 import { JobsService } from 'src/app/employee/jobs.service';
@@ -16,7 +16,7 @@ export class JobsPostedPage implements OnInit,OnDestroy {
   jobs:Job[];
   isLoading=false;
   private jobsSub:Subscription
-  constructor(private jobsService:JobsService,private router:Router,private loadingCtrl:LoadingController) {
+  constructor(private jobsService:JobsService,private router:Router,private loadingCtrl:LoadingController,private alertCtrl:AlertController) {
    }
 
   ngOnInit() {
@@ -29,9 +29,19 @@ export class JobsPostedPage implements OnInit,OnDestroy {
 
   ionViewWillEnter(){
     this.isLoading=true;
-    this.jobsService.fetchEmployerJobs().subscribe(()=>{
+    this.jobsService.fetchEmployerJobs().subscribe({next:()=>{
       this.isLoading=false;
-    });
+    },error:errorResp=>{
+      this.alertCtrl.create({
+        header:'An error occurred',
+        message:'You need to login first',
+        buttons:[{text:'Okay',handler:()=>{
+          this.router.navigate(['/auth'])
+        }}]
+      }).then(alerEl=>{
+        alerEl.present();
+      })
+    }});
   }
 
   onEdit(jobId:string,slidedItem:IonItemSliding){

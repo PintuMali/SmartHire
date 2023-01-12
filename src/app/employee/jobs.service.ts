@@ -43,7 +43,12 @@ export class JobsService{
   }
 
   fetchEmployerJobs(){
-    return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?orderBy="userId"&equalTo="${this.authService.userId}"`).pipe(
+    return this.authService.userId.pipe(switchMap(userId=>{
+      if(!userId){
+        throw new Error('User not found');
+      }
+      return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?orderBy="userId"&equalTo="${userId}"`)
+    }),
     map(respData=>{
       const jobs=[];
       for(const key in respData){

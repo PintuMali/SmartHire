@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from './user.model';
+import {Capacitor} from '@capacitor/core';
 export interface AuthResponseData{
   kind:string,
   idToken:string,
@@ -59,6 +60,10 @@ export class AuthService {
 
     const expirationTime=new Date(new Date().getTime()+(+userData.expiresIn*1000));
     this._user.next(new User(userData.localId,userData.email,userData.idToken,expirationTime))
+
+}
+private storeAuthData(userId:string,token:string,tokenExpirationDate:string){
+
 
 }
 }

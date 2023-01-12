@@ -38,12 +38,10 @@ constructor(private authService:AuthService,private router:Router,private loadin
       }
       authObs.subscribe({next:(respData)=>{
 
-          console.log(respData);
-
           loadCtrl.dismiss();
           this.isLoading=false;
           loadCtrl.dismiss();
-          this.router.navigateByUrl('/places/tabs/discover')
+          this.router.navigateByUrl('/employer/jobs-posted')
 
       },error:errorResp=>{
         loadCtrl.dismiss();
