@@ -1,9 +1,91 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>jobs-posted</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/employer"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons  slot="primary">
+      <ion-button routerLink="/employer/jobs-posted/post-job">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>My jobs</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" *ngIf="!isLoading && (!jobs || jobs.length<=0)" class="ion-text-center">
+       <div>
+        <p>No jobs found! Please create one first!</p>
+        <ion-button color="primary" routerLink="/employer/jobs-posted/post-job">Add New Job</ion-button>
+       </div>
+      </ion-col>
+      <ion-col size="12" size-sm="8" offset-sm="2" *ngIf="!isLoading && (jobs && jobs.length>0)">
+        <ion-list>
+          <ion-item-sliding *ngFor="let job of jobs" #slidedItem>
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="job.companyLogo"></ion-img>
+              </ion-thumbnail>
+              <h1>{{job.jobProfile}}</h1>
+              <div class="job-posted-details">
+                <ion-item>
+                <ion-icon name="location-outline" color="primary"></ion-icon>
+                <ion-text color="tertiary" class="space-left">{{job.jobLocation}}</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-icon name="calendar" class="space-left" color="primary"></ion-icon>
+                <ion-text color="tertiary" class="space-left">Apply Before {{ job.jobDeadline | date}}</ion-text>
+              </ion-item>
+              </div>
+              </ion-item>
+               <ion-item-options side="end">
+              <ion-item-option color="primary" (click)="onEdit(job.jobId,slidedItem)">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+            <ion-item-options side="start">
+              <ion-item-option color="danger" (click)="onDelete (job.jobId,slidedItem)">
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
 
+      <ion-col size="12" size-sm="8" offset-sm="2" *ngIf="isLoading">
+        <ion-list>
+          <ion-item-sliding *ngFor="let job of [1,2,3,4,5,6]" #slidedItem>
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-thumbnail>
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              <div class="job-posted-details">
+                <ion-item>
+                  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-item>
+              <ion-item>
+               <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-item>
+              </div>
+              </ion-item>
+               <ion-item-options side="end">
+              <ion-item-option color="primary" (click)="onEdit('pm',slidedItem)">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+            <ion-item-options side="start">
+              <ion-item-option color="danger" (click)="onDelete ('pm',slidedItem)">
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

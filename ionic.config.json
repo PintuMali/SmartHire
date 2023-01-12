@@ -1,5 +1,7 @@
 {
   "name": "SmartHire",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/employee/jobs/job-details" defaultHref="/employee/jobs/job-details"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="special2">Resume</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-grid>
+  <ion-row>
+    <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="4" offset-lg="4">
+      <ion-img [src]="images[1].imageUrl"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="5" offset="1">
+      <ion-img [src]="images[0].imageUrl"></ion-img>
+      </ion-col>
+      <ion-col size="5">
+      <ion-img [src]="images[0].imageUrl"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="7" size-sm="4" offset="2.5" offset-sm="4" size-md="4" offset-md4="">
+      <input class="" type="file"/>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button expand="block">Submit Application</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-button expand="block">Test</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

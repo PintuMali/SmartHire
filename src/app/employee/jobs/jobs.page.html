@@ -1,17 +1,118 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
+  <ion-toolbar *ngIf="hasSearchBarOpen">
+    <ion-searchbar style="margin-top: 20px;" show-cancel-button="always" (ionCancel)="onCancelClick($event)"  placeholder="Category,location or company..."></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!hasSearchBarOpen">
+    <ion-buttons  slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button routerLink="/employee/jobs">
+      <ion-button routerLink="/employee/jobs" (click)="onSearchBarIconClick()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/employee/jobs">
+        <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Jobs</ion-title>
+    <ion-title class="special2">Jobs</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+<ion-card *ngFor="let job of jobs">
+  <div *ngIf="!isLoading && jobs.length>0">
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-avatar>
+            <ion-img [src]="[job.companyLogo]" style="width: 100px;height: 100px;">
+            </ion-img>
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card-title>{{job.jobProfile}}</ion-card-title>
+          <ion-card-subtitle>{{job.companyName}}</ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobLocation}}</ion-text></ion-item>
+        </ion-col>
+        <ion-col size="6">
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobSalary}} / month</ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>java</ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button expand="block" (click)="onApply(job.jobId)">Apply</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text><span *ngIf="this.hasEnoughTime">Apply by</span><span *ngIf="!this.hasEnoughTime">Remaining</span> {{job.jobDeadline}} <span *ngIf="!this.hasEnoughTime">days only</span></ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+  </div>
+  <div *ngIf="!isLoading &&(!jobs||jobs.length<=0)">
+    <p class="ion-text-center">No Jobs Available, Try Again Later</p>
+  </div>
 
+</ion-card>
+<ion-card *ngFor="let job of [1,2,3,4,5]">
+<div *ngIf="isLoading">
+  <ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-avatar>
+            <ion-skeleton-text [animated]="true" style="width: 100px;height: 100px;"></ion-skeleton-text>
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-header>
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+        </ion-col>
+        <ion-col size="6">
+      <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+  </div>
+  </ion-card>
 </ion-content>

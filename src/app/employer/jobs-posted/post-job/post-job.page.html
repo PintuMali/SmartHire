@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/employer/jobs-posted"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Post-job</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCreateJob()" [disabled]="!form.valid">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="form">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Company:</ion-label>
+            <ion-input type="text" autocomplete autocorrect formControlName="title"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Job Profile:</ion-label>
+            <ion-input type="text" autocomplete autocorrect formControlName="profile"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Salary(LPA):</ion-label>
+            <ion-input type="number" formControlName="salary"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Deadline:</ion-label>
+            <ion-input id="fromDate" value="{{fromDate|date:'yyyy-MM-dd'}}"></ion-input>
+            <ion-popover trigger="fromDate" [keepContentsMounted]=true>
+              <ng-template>
+                <ion-datetime presentation="date" [showDefaultButtons]="true" [(ngModel)]="fromDate" id="fromDate" formControlName="deadline"></ion-datetime>
+              </ng-template>
+            </ion-popover>
+          </ion-item>
+        </ion-col>
+        </ion-row>
+      <ion-row>
+        <ion-col size-sm="6"  offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Job Description:</ion-label>
+            <ion-textarea rows="3" formControlName="description"></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!form.get('description').valid&&form.get('description').touched">
+        <ion-col size-sm="6" offset-sm="3">
+          <label>Description must be between 1 and 500 characters.</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6"  offset-sm="3">
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Skills Required:</ion-label>
+            <ion-select ngModel="none" name="skills" interface="popover" formControlName="skills" [multiple]="true">
+              <ion-select-option value="java">Java</ion-select-option>
+              <ion-select-option value="Python">Python</ion-select-option>
+              <ion-select-option value="React">React</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Experience Required:</ion-label>
+            <ion-input type="text" autocomplete autocorrect formControlName="experience" placeholder="e.g. Minimum 2-3 Years"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Location(City):</ion-label>
+            <ion-input type="text" autocomplete autocorrect formControlName="location"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6"  offset-sm="3">
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Job Type:</ion-label>
+            <ion-select ngModel="none" name="role" interface="popover" formControlName="jobType">
+              <ion-select-option value="Work from home">Work from home</ion-select-option>
+              <ion-select-option value="Full-time">Full-time</ion-select-option>
+              <ion-select-option value="Part-time">Part-time</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </form>
+</ion-content>

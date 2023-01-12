@@ -24,3 +24,56 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Roboto&display=swap');
+
+
+
+.heading1{
+  font-size: 24px;
+  font-weight: bold;
+}
+.heading2{
+  font-size: 24px;
+  font-weight:600
+}
+
+.subtitle1{
+  font-size: 18px;
+}
+.subtitle1-M{
+  font-size: 18px;
+  font-weight: 600;
+}
+.subtitle2{
+  font-size: 16px;
+}
+.subtitle2-M{
+  font-size: 16px;
+  font-weight: 600;
+}
+.body1{
+  font-size: 14px;
+}
+.body-M{
+  font-size: 14px;
+  font-weight: 600
+}
+.body2{
+  font-size: 12px;
+}
+.special1{
+  font-size: 27px;
+  font-family:aclonica,roboto,sans-serif ;
+}
+.special2{
+  font-size: 20px;
+  font-family:aclonica,roboto,sans-serif ;
+}
+.special3{
+  font-size: 18px;
+  font-family:aclonica,roboto,sans-serif;
+}
+
+.ion-invalid.ion-touched ion-label{
+  color: var(--ion-color-danger);
+}
