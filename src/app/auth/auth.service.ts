@@ -15,12 +15,23 @@ export interface AuthResponseData{
   expiresIn:string,
   registered?:boolean
 }
+
+interface userData{
+  email:string,
+  firstName:string,
+  lastName:string,
+  role:string,
+  userId:string
+}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
   private _user= new  BehaviorSubject<User>(null);
+  private _role:string;
   private activeLogoutTimer:any;
+  private _roleId:string;
+
 
   get userIsAuthenticated(){
     return this._user.asObservable().pipe(map(user=>{
@@ -33,6 +44,10 @@ export class AuthService implements OnDestroy {
       }
     }
     ));
+  }
+
+  get role(){
+    return this._role
   }
 
   get userId(){
@@ -51,12 +66,12 @@ export class AuthService implements OnDestroy {
       if(!storedData || !storedData.value){
         return null;
       }
-      const parsedData=JSON.parse(storedData.value)as {token:string,tokenExpirationDate:string,userId:string,email:string};
+      const parsedData=JSON.parse(storedData.value)as {token:string,tokenExpirationDate:string,userId:string,role:string,email:string};
       const expirationTime=new Date(parsedData.tokenExpirationDate);
       if(expirationTime<=new Date()){
         return null;
       }
-      const user =new User(parsedData.userId,parsedData.email,parsedData.token,expirationTime);
+      const user =new User(parsedData.userId,parsedData.role,parsedData.email,parsedData.token,expirationTime);
       return user;
     }),tap(user=>{
       if(user){
@@ -67,15 +82,35 @@ export class AuthService implements OnDestroy {
       return !!user;
     }));
   }
-  signup(email:string,password:string){
+  signup(email:string,password:string,role:string,firstName:string,lastName:string){
+    this._role=role;
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`
     ,{email:email,password:password,returnSecureToken:true}
-    ).pipe(tap(this.setUserData.bind(this)));
+    ).pipe(tap(this.setUserData.bind(this)
+    ),tap(data=>{
+      return this.http.post(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json`,{userId:data.localId,email:data.email,firstName:firstName,lastName:lastName,role:this._role}).subscribe(data=>{
+        this._roleId=data['name'];
+
+      });
+    }
+    ));
   }
-  login(email:string,password:string){
+  login(email:string,password:string,role:string){
+
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`
     ,{email:email,password:password,returnSecureToken:true
-    }).pipe(tap(this.setUserData.bind(this)));
+    }).pipe(tap(this.setUserData.bind(this)),tap(data=>{
+      return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${data.localId}"`).subscribe(userData=>{
+      for(const key in userData){
+        this._role=userData[key].role
+      }
+      if(role!==this._role){
+      return null;
+      }
+
+      });
+    })
+    );
   }
   logout(){
     this._user.next(null);
@@ -108,15 +143,15 @@ export class AuthService implements OnDestroy {
   private setUserData(userData:AuthResponseData){
 
     const expirationTime=new Date(new Date().getTime()+(+userData.expiresIn*1000));
-    const user=new User(userData.localId,userData.email,userData.idToken,expirationTime)
+    const user=new User(userData.localId,this._role,userData.email,userData.idToken,expirationTime)
     this._user.next(user);
     this.autoLogout(user.tokenDuration);
-    this.storeAuthData(userData.localId,userData.idToken,expirationTime.toISOString(),userData.email)
+    this.storeAuthData(userData.localId,this._role,userData.idToken,expirationTime.toISOString(),userData.email)
 
 }
-private storeAuthData(userId:string,token:string,tokenExpirationDate:string,email:string){
+private storeAuthData(userId:string,role:string,token:string,tokenExpirationDate:string,email:string){
   const data=JSON.stringify({
-    userId:userId,token:token,tokenExpirationDate:tokenExpirationDate,email:email
+    userId:userId,role:role,token:token,tokenExpirationDate:tokenExpirationDate,email:email
   });
   Preferences.set({key:'authData',value:data})
 

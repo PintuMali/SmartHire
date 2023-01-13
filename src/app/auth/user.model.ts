@@ -1,5 +1,5 @@
 export class User{
-  constructor(public id:string,public email:string,private _token:string,private tokenExxpirationDate: Date){}
+  constructor(public id:string,public role:string,public email:string,private _token:string,private tokenExxpirationDate: Date){}
 
   get token(){
     if(!this.tokenExxpirationDate||this.tokenExxpirationDate<= new Date()){
@@ -13,7 +13,6 @@ export class User{
       return 0;
     }
 
-return 8000;
-    // return this.tokenExxpirationDate.getTime()-new Date().getTime();
+    return this.tokenExxpirationDate.getTime()-new Date().getTime();
   }
 }
