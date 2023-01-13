@@ -15,7 +15,7 @@ import { AuthResponseData, AuthService } from './auth.service';
 export class AuthPage implements OnInit {
   images:Images[];
   isLoading=false;
-  isLogin=false;
+  isLogin=true;
 constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController,private imageService:HomeService,private alertCtrl:AlertController){
   this.images=this.imageService.images;
 }
@@ -41,10 +41,11 @@ constructor(private authService:AuthService,private router:Router,private loadin
           loadCtrl.dismiss();
           this.isLoading=false;
           loadCtrl.dismiss();
-          this.router.navigateByUrl('/employer/jobs-posted')
+          this.router.navigateByUrl('/employee/jobs')
 
       },error:errorResp=>{
         loadCtrl.dismiss();
+        console.log(errorResp)
         const code=errorResp.error.error.message;
         let message='Could not sign you up, please try again.';
         if(code==='EMAIL_EXISTS'){
@@ -69,6 +70,7 @@ constructor(private authService:AuthService,private router:Router,private loadin
   const password=form.value.password;
   const role=form.value.role;
 this.authenticate(email,password);
+form.reset();
 }
 
 private showAlert(message:string){
