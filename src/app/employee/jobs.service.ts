@@ -30,7 +30,9 @@ export class JobsService{
   private _basePath='/images'
   constructor(private authService:AuthService,private http:HttpClient,private db:AngularFireDatabase,private storage:AngularFireStorage){}
   fetchJobs(){
-    return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json`).pipe(
+    return this.authService.token.pipe(switchMap(token=>{
+      return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?auth=${token}`)
+    }),
     map(respData=>{
       const jobs=[];
       for(const key in respData){
@@ -49,20 +51,27 @@ export class JobsService{
     const filePath=`${this._basePath}/${image['name']}`
     const storageRef=this.storage.ref(filePath)
     const uploadtask= from(this.storage.upload(filePath,image));
-    let imagePath:string;
-    return uploadtask.pipe(concatMap(()=>{
-      return storageRef.getDownloadURL();
-    }))
+    return this.authService.token.pipe(switchMap(token=>{
+      return uploadtask.pipe(concatMap(()=>{
+        return storageRef.getDownloadURL();
+      }));
+    }));
+
 
 
   }
 
   fetchEmployerJobs(){
+    let fetchedUserId:string
     return this.authService.userId.pipe(take(1),switchMap(userId=>{
-      if(!userId){
+      fetchedUserId=userId;
+
+      return this.authService.token;
+    }),take(1),switchMap(token=>{
+      if(!fetchedUserId){
         throw new Error('User not found');
       }
-      return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?orderBy="userId"&equalTo="${userId}"`)
+      return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?orderBy="userId"&equalTo="${fetchedUserId}"&auth=${token}`)
     }),
     map(respData=>{
       const jobs=[];
@@ -81,7 +90,9 @@ export class JobsService{
     return this._jobs.asObservable();
   }
   getJob(jobId:string){
-    return this.http.get<JobData>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json`).pipe(
+    return this.authService.token.pipe(take(1),switchMap(token=>{
+      return this.http.get<JobData>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?auth=${token}`)
+    }),
       map(jobData=>{
         return new Job(jobId,jobData.companyName,jobData.companyLogo,jobData.jobProfile,jobData.jobSalary,new Date(jobData.jobDeadline),jobData.jobDescription,jobData.jobSkills,jobData.jobExperience,jobData.jobLocation,jobData.jobType,jobData.userId)
       })
@@ -90,12 +101,16 @@ export class JobsService{
   addJob(companyName:string,companyLogo:string,jobProfile:string,jobSalary:number,jobDeadline:Date,jobDescription:string,jobSkills:string[],jobExperience:string,jobLocation:string,jobType:string,featureImage:[]=[]){
     let generatedJobId:string;
     let newJob:Job;
+    let fetchedUserId:string;
     return this.authService.userId.pipe(take(1),switchMap(userId=>{
-      if(!userId){
+      fetchedUserId=userId;
+      return this.authService.token
+    }),take(1),switchMap(token=>{
+      if(!fetchedUserId){
         throw new Error('No user id found');
       }
-       newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,userId,featureImage);
-      return this.http.post<{name:string}>('https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json',{...newJob, jobId:null});
+       newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,fetchedUserId,featureImage);
+      return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?auth${token}`,{...newJob, jobId:null});
     }),switchMap(respData=>{
       generatedJobId=respData.name;
       return this.jobs;
@@ -108,7 +123,11 @@ export class JobsService{
   }
   updateJob(jobId:string,salary:number,deadline:Date,jobDescription:string,jobSkills:[],jobExperience:string){
     let updatedJobs:Job[];
-    return this.jobs.pipe(take(1),switchMap(jobs=>{
+    let fetchedToken:string
+    return this.authService.token.pipe(take(1),switchMap(token=>{
+      fetchedToken=token;
+      return this.jobs;
+    }),take(1),switchMap(jobs=>{
       if(!jobs || jobs.length<=0){
         return this.fetchJobs();
       }
@@ -122,7 +141,7 @@ export class JobsService{
       updatedJobs=[...jobs]
       const oldJob=updatedJobs[updatedJobIndex];
       updatedJobs[updatedJobIndex]=new Job(oldJob.jobId,oldJob.companyName,oldJob.companyLogo,oldJob.jobProfile,salary,deadline,jobDescription,jobSkills,jobExperience,oldJob.jobLocation,oldJob.jobType,oldJob.userId,oldJob.featureImage);
-      return this.http.put(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json`,
+      return this.http.put(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?${fetchedToken}`,
       {...updatedJobs[updatedJobIndex], jobId:null}
       );
     }),tap(()=>{
@@ -131,7 +150,9 @@ export class JobsService{
     }));
   }
   deleteJob(jobId:string){
-    return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json`).pipe(switchMap(()=>{
+    return this.authService.token.pipe(take(1),switchMap(token=>{
+      return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?${token}`)
+    }),switchMap(()=>{
       return this.jobs;
     }),take(1),tap(jobs=>{
       let imgPath;

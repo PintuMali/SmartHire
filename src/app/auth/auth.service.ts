@@ -60,6 +60,17 @@ export class AuthService implements OnDestroy {
       }
     }))
   }
+get token(){
+  return this._user.asObservable().pipe(map(user=>{
+    if(user){
+    return  user.token
+    }
+    else{
+      return null;
+    }
+  }))
+}
+
   constructor(private http:HttpClient,private alertCtrl:AlertController) { }
   autoLogin(){
     return from(Preferences.get({key:'authData'})).pipe(map(storedData=>{
