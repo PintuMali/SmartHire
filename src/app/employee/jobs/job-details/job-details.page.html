@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button routerLink="/employee" defaultHref="/employee"></ion-back-button>
+      <ion-back-button defaultHref="/employee/jobs"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button routerLink="/employee/jobs">
+      <ion-button>
         <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,41 +13,38 @@
 </ion-header>
 
 <ion-content>
-<ion-grid>
+<ion-grid *ngIf="!isLoading">
   <ion-row class="ion-align-items-center">
     <ion-col size="10" class="ion-text-start">
       <ion-row>
-        <ion-col> <ion-card-title>Front End Developer</ion-card-title></ion-col>
+        <ion-col> <ion-card-title>{{job.jobProfile}}</ion-card-title></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col> <ion-card-subtitle>Facebook</ion-card-subtitle></ion-col>
+        <ion-col> <ion-card-subtitle>{{job.companyName}}</ion-card-subtitle></ion-col>
       </ion-row>
 
     </ion-col>
     <ion-col size="2" class="ion-text-end">
       <ion-thumbnail class="ion-float-end">
-        <ion-img src="../../../../assets/images/learn.svg"></ion-img>
+        <ion-img [src]="[job.companyLogo]"></ion-img>
       </ion-thumbnail>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="5">
-      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>mumbai</ion-text></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobLocation}}</ion-text></ion-item>
     </ion-col>
     <ion-col size="5">
-  <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>6000 / month</ion-text></ion-item>
+  <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobSalary}} LPA</ion-text></ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="5">
-      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>3 Months</ion-text></ion-item>
-    </ion-col>
-    <ion-col size="5">
-      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>java</ion-text></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobSkills[0]}}</ion-text></ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-icon name="chatbox-outline"></ion-icon><ion-text>Applications</ion-text></ion-item></ion-col>
+    <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-icon name="chatbox-outline"></ion-icon><ion-text>{{'150'}}Applications</ion-text></ion-item></ion-col>
     <ion-col size="6"><ion-item lines="none" class="ion-float-end"><ion-buttons><ion-icon name="bookmark-outline"></ion-icon><ion-icon name="share-social-outline"></ion-icon></ion-buttons></ion-item></ion-col>
   </ion-row>
   <ion-row>
@@ -58,11 +55,7 @@
   <ion-row>
     <ion-col>
       <h6>Job Description:</h6>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing
-        elit. Doloremque pariatur esse asperiores
-         ducimus labore commodi error molestias ipsum
-          ipsam, soluta expedita, dolore fugit illum
-           odio distinctio veniam magnam saepe accusamus!</p>
+      <p>{{job.jobDescription}}</p>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -71,25 +64,10 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col size="6">
+    <ion-col size="8">
       <ion-row class="ion-justify-content-between">
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
-        </ion-col>
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
-        </ion-col>
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
-        </ion-col>
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
-        </ion-col>
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
-        </ion-col>
-        <ion-col size="4">
-          <ion-badge>Java</ion-badge>
+        <ion-col *ngFor="let skill of job.jobSkills" size="4">
+          <ion-badge>{{skill}}</ion-badge>
         </ion-col>
       </ion-row>
     </ion-col>
@@ -97,12 +75,84 @@
   <ion-row>
     <ion-col>
       <h6>Experience Required:</h6>
-      <p>Minimun 2-3 Years</p>
+      <p>Minimun {{job.jobExperience}} Years</p>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="12">
       <ion-button expand="block" (click)="onApplyClick()">Apply now</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-grid *ngIf="isLoading">
+  <ion-row class="ion-align-items-center">
+    <ion-col size="10" class="ion-text-start">
+      <ion-row>
+        <ion-col> <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col> <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle></ion-col>
+      </ion-row>
+
+    </ion-col>
+    <ion-col size="2" class="ion-text-end">
+      <ion-thumbnail class="ion-float-end">
+        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      </ion-thumbnail>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="5">
+      <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+    </ion-col>
+    <ion-col size="5">
+  <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="5">
+      <ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item></ion-col>
+    <ion-col size="6"><ion-item lines="none" class="ion-float-end"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-item></ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h5><ion-skeleton-text [animated]="true"></ion-skeleton-text></h5>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6><ion-skeleton-text [animated]="true"></ion-skeleton-text></h6>
+      <p><ion-skeleton-text [animated]="true"></ion-skeleton-text></p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6><ion-skeleton-text [animated]="true"></ion-skeleton-text></h6>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="8">
+      <ion-row class="ion-justify-content-between">
+        <ion-col *ngFor="let skill of [1,2,3,4,5,6]" size="4">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <h6><ion-skeleton-text [animated]="true"></ion-skeleton-text></h6>
+      <p>Minimun <ion-skeleton-text [animated]="true"></ion-skeleton-text> Years</p>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
     </ion-col>
   </ion-row>
 </ion-grid>

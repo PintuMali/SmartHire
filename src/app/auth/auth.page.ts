@@ -39,6 +39,7 @@ constructor(private authService:AuthService,private router:Router,private loadin
           this.isLoading=false;
           loadCtrl.dismiss();
           if(role===this.authService.role){
+
           if(role=='employer'){
           this.router.navigateByUrl('/employer')
           }
@@ -48,6 +49,8 @@ constructor(private authService:AuthService,private router:Router,private loadin
         }
         else{
           this.authService.logout();
+
+
           this.alertCtrl.create({header:'An error occurred',
         message:`Role not matched`,
       buttons:['Okay']}).then(alertEl=>{
