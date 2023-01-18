@@ -84,7 +84,7 @@ export class AuthService implements OnDestroy {
   }
   signup(email:string,password:string,role:string,firstName:string,lastName:string){
     this._role=role;
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIKey}`
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebase.apiKey}`
     ,{email:email,password:password,returnSecureToken:true}
     ).pipe(tap(this.setUserData.bind(this)
     ),tap(data=>{
@@ -97,7 +97,7 @@ export class AuthService implements OnDestroy {
   }
   login(email:string,password:string,role:string){
 
-    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIKey}`
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebase.apiKey}`
     ,{email:email,password:password,returnSecureToken:true
     }).pipe(tap(this.setUserData.bind(this)),tap(data=>{
       return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${data.localId}"`).subscribe(userData=>{

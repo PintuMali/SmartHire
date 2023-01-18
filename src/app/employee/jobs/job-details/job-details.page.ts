@@ -17,22 +17,22 @@ export class JobDetailsPage implements OnInit {
   ngOnInit() {
   }
   onApplyClick(){
-    this.authService.userIsAuthenticated.pipe(take(1),tap(isAuhenticate=>{
-      if(isAuhenticate){
+    // this.authService.userIsAuthenticated.pipe(take(1),tap(isAuhenticate=>{
+      // if(isAuhenticate){
         this.router.navigateByUrl('/employee/jobs/job-details/resume-submission')
-      }
-      else{
-        this.alertCtrl.create({
-          header:'Login Required!!!',
-          message:'You need to login to apply',
-          buttons:[{text:'Okay',handler:()=>{
-            this.router.navigate(['/auth'])
-          }}]
-        }).then(alerEl=>{
-          alerEl.present();
-        })
-      }
-    })).subscribe();
+    //   }
+    //   else{
+    //     this.alertCtrl.create({
+    //       header:'Login Required!!!',
+    //       message:'You need to login to apply',
+    //       buttons:[{text:'Okay',handler:()=>{
+    //         this.router.navigate(['/auth'])
+    //       }}]
+    //     }).then(alerEl=>{
+    //       alerEl.present();
+    //     })
+    //   }
+    // })).subscribe();
 
 
   }

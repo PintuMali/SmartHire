@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Post-job</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onCreateJob()" [disabled]="!form.valid">
+      <ion-button (click)="onCreateJob()" [disabled]="!form.valid||!this.form.get('image').value">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -104,6 +104,13 @@
               <ion-select-option value="Part-time">Part-time</ion-select-option>
             </ion-select>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6"  offset-sm="3">
+          <app-image-picker
+          [showPreview]="form.get('image').value"
+          (imagePick)="onImagePicked($event)"></app-image-picker>
         </ion-col>
       </ion-row>
     </ion-grid>

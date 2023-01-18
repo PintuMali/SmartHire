@@ -1,7 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { AngularFireDatabase } from "@angular/fire/compat/database";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { title } from "process";
-import { BehaviorSubject, map, of, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, concatMap, from, map, of, switchMap, take, tap } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { Job } from "./job.model";
 interface JobData{
@@ -25,7 +27,8 @@ userId: string
 @Injectable({providedIn:'root'})
 export class JobsService{
   private _jobs= new BehaviorSubject<Job[]>([]);
-  constructor(private authService:AuthService,private http:HttpClient){}
+  private _basePath='/images'
+  constructor(private authService:AuthService,private http:HttpClient,private db:AngularFireDatabase,private storage:AngularFireStorage){}
   fetchJobs(){
     return this.http.get<{[key:string]:JobData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json`).pipe(
     map(respData=>{
@@ -40,6 +43,18 @@ export class JobsService{
       this._jobs.next(jobs);
     })
     );
+  }
+
+  uploadImage(image:File){
+    const filePath=`${this._basePath}/${image['name']}`
+    const storageRef=this.storage.ref(filePath)
+    const uploadtask= from(this.storage.upload(filePath,image));
+    let imagePath:string;
+    return uploadtask.pipe(concatMap(()=>{
+      return storageRef.getDownloadURL();
+    }))
+
+
   }
 
   fetchEmployerJobs(){
@@ -72,14 +87,14 @@ export class JobsService{
       })
     );
   }
-  addJob(companyName:string,jobProfile:string,jobSalary:number,jobDeadline:Date,jobDescription:string,jobSkills:string[],jobExperience:string,jobLocation:string,jobType:string,featureImage:[]=[]){
+  addJob(companyName:string,companyLogo:string,jobProfile:string,jobSalary:number,jobDeadline:Date,jobDescription:string,jobSkills:string[],jobExperience:string,jobLocation:string,jobType:string,featureImage:[]=[]){
     let generatedJobId:string;
     let newJob:Job;
     return this.authService.userId.pipe(take(1),switchMap(userId=>{
       if(!userId){
         throw new Error('No user id found');
       }
-       newJob=new Job(Math.random().toString(),companyName,'../../../assets/images/glassBall.svg',jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,userId,featureImage);
+       newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,userId,featureImage);
       return this.http.post<{name:string}>('https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json',{...newJob, jobId:null});
     }),switchMap(respData=>{
       generatedJobId=respData.name;
@@ -119,8 +134,18 @@ export class JobsService{
     return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json`).pipe(switchMap(()=>{
       return this.jobs;
     }),take(1),tap(jobs=>{
+      let imgPath;
+      let job=jobs.filter(jb=>jb.jobId===jobId);
+      imgPath=job[0].companyLogo;
+
+      this.deleteImage(imgPath)
       this._jobs.next(jobs.filter(jb=>jb.jobId!==jobId));
+
     }));
+  }
+
+  deleteImage(imgUrl:string){
+    this.storage.refFromURL(imgUrl).delete();
   }
 }
 

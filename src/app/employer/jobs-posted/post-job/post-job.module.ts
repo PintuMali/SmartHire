@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { PostJobPageRoutingModule } from './post-job-routing.module';
 
 import { PostJobPage } from './post-job.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IonicModule,
-    PostJobPageRoutingModule
+    PostJobPageRoutingModule,
+    SharedModule
   ],
   declarations: [PostJobPage]
 })
