@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { title } from 'process';
+import { from, switchMap, tap } from 'rxjs';
 import { JobsService } from 'src/app/employee/jobs.service';
 
 @Component({
@@ -53,24 +54,43 @@ export class PostJobPage implements OnInit {
       jobType:new FormControl(null,{
         updateOn:'blur',
         validators:[Validators.required]
-      })
+      }),
+      image: new FormControl(null)
     });
   }
   onCreateJob(){
-    if(!this.form.valid){
+    if(!this.form.valid|| !this.form.get('image').value){
       return;
     }
+    let imgUrl:string;
     this.loadingCtrl.create({
       message:'Creating a job...'
     }).then(loadingEl=>{
       loadingEl.present();
+      console.log('Uploading Started');
 
-      this.jobService.addJob(this.form.value.title,this.form.value.profile,this.form.value.salary,this.form.value.deadline,this.form.value.description,this.form.value.skills,this.form.value.experience,this.form.value.location,this.form.value.jobType).subscribe(()=>{
+      this.jobService.uploadImage(this.form.get('image').value).pipe(tap(data=>{
+        imgUrl=data;
+        console.log(data);
+
+
+      }),switchMap((data)=>{
+
+      return this.jobService.addJob(this.form.value.title,data,this.form.value.profile,this.form.value.salary,this.form.value.deadline,this.form.value.description,this.form.value.skills,this.form.value.experience,this.form.value.location,this.form.value.jobType);
+      }))
+      .subscribe(()=>{
+        console.log(`Subscribed`);
+
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['/employer/jobs-posted'])
       });
     })
 
+  }
+  onImagePicked(imgData:File){
+
+     const imageFile=imgData
+    this.form.patchValue({image:imageFile})
   }
 }

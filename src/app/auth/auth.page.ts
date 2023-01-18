@@ -15,36 +15,49 @@ import { AuthResponseData, AuthService } from './auth.service';
 export class AuthPage implements OnInit {
   images:Images[];
   isLoading=false;
-  isLogin=false;
+  isLogin=true;
 constructor(private authService:AuthService,private router:Router,private loadingCtrl:LoadingController,private imageService:HomeService,private alertCtrl:AlertController){
   this.images=this.imageService.images;
 }
   ngOnInit() {
   }
-  authenticate(email:string,password:string){
+  authenticate(email:string,password:string,role:string,firstName:string,lastName:string){
     this.isLoading=true;
     this.loadingCtrl.create({keyboardClose:true,message:'loadinng....'}).then(loadCtrl=>{
       loadCtrl.present();
       let authObs:Observable<AuthResponseData>;
       if(this.isLogin){
-        authObs=this.authService.login(email,password);
-
-
+        authObs=this.authService.login(email,password,role);
       }
       else{
-        authObs=this.authService.signup(email,password)
-
-
+        authObs=this.authService.signup(email,password,role,firstName,lastName)
       }
       authObs.subscribe({next:(respData)=>{
+
 
           loadCtrl.dismiss();
           this.isLoading=false;
           loadCtrl.dismiss();
-          this.router.navigateByUrl('/employer/jobs-posted')
+          if(role===this.authService.role){
+          if(role=='employer'){
+          this.router.navigateByUrl('/employer')
+          }
+          else{
+            this.router.navigateByUrl('/employee')
+          }
+        }
+        else{
+          this.authService.logout();
+          this.alertCtrl.create({header:'An error occurred',
+        message:`Role not matched`,
+      buttons:['Okay']}).then(alertEl=>{
+        alertEl.present();
+      })
+        }
 
       },error:errorResp=>{
         loadCtrl.dismiss();
+        console.log(errorResp)
         const code=errorResp.error.error.message;
         let message='Could not sign you up, please try again.';
         if(code==='EMAIL_EXISTS'){
@@ -68,7 +81,10 @@ constructor(private authService:AuthService,private router:Router,private loadin
   const email=form.value.email;
   const password=form.value.password;
   const role=form.value.role;
-this.authenticate(email,password);
+  const firstName=form.value.firstName;
+  const lasttName=form.value.lastName;
+this.authenticate(email,password,role,firstName,lasttName);
+form.reset();
 }
 
 private showAlert(message:string){
