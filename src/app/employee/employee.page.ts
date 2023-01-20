@@ -39,11 +39,13 @@ export class EmployeePage implements OnInit,OnDestroy {
     this.jobService.fetchJobs().subscribe({next:()=>{
       this.isLoading=false;
     },error:errorEl=>{
+      console.log(errorEl);
+
       this.alertCtrl.create({
         header:'An error occurred!',
         message:'Check Your Connection,try again later',
         buttons:[{text:'Okay',handler:()=>{
-          this.router.navigate(['/home']);
+          this.router.navigate(['/auth']);
         }}]
       }).then(alertEl=>{
         alertEl.present();

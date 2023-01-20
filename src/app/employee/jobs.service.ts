@@ -110,7 +110,7 @@ export class JobsService{
         throw new Error('No user id found');
       }
        newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,fetchedUserId,featureImage);
-      return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?auth${token}`,{...newJob, jobId:null});
+      return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?auth=${token}`,{...newJob, jobId:null});
     }),switchMap(respData=>{
       generatedJobId=respData.name;
       return this.jobs;
@@ -134,14 +134,13 @@ export class JobsService{
       else{
         return of(jobs);
       }
-
     }
     ),switchMap(jobs=>{
       const updatedJobIndex=jobs.findIndex(jb=>jb.jobId===jobId);
       updatedJobs=[...jobs]
       const oldJob=updatedJobs[updatedJobIndex];
       updatedJobs[updatedJobIndex]=new Job(oldJob.jobId,oldJob.companyName,oldJob.companyLogo,oldJob.jobProfile,salary,deadline,jobDescription,jobSkills,jobExperience,oldJob.jobLocation,oldJob.jobType,oldJob.userId,oldJob.featureImage);
-      return this.http.put(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?${fetchedToken}`,
+      return this.http.put(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?auth=${fetchedToken}`,
       {...updatedJobs[updatedJobIndex], jobId:null}
       );
     }),tap(()=>{
@@ -151,7 +150,7 @@ export class JobsService{
   }
   deleteJob(jobId:string){
     return this.authService.token.pipe(take(1),switchMap(token=>{
-      return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?${token}`)
+      return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?auth=${token}`)
     }),switchMap(()=>{
       return this.jobs;
     }),take(1),tap(jobs=>{
