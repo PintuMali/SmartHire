@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/employee" routerLink="/employee/jobs"></ion-back-button>
-    </ion-buttons>
     <ion-title>{{isLogin?'Login':'Register'}}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -29,6 +26,32 @@
           <ion-label position="floating">Password</ion-label>
           <ion-input type="password" ngModel name="password" required minlength="6" #passwordCtrl="ngModel"></ion-input>
         </ion-item>
+        <div *ngIf="isLogin" class="ion-text-right">
+          <ion-button id="open-modal" color="primary" fill="clear">Forget Password</ion-button>
+          <ion-modal trigger="open-modal">
+            <ng-template>
+              <ion-header>
+                <ion-toolbar>
+                  <ion-buttons slot="start">
+                    <ion-button (click)="cancel()">Cancel</ion-button>
+                  </ion-buttons>
+                  <ion-buttons slot="end">
+                    <ion-button  (click)="onForgetPassword(emailCtrl2.value)" [disabled]="!emailCtrl2.value || !emailCtrl2.valid" [strong]="true">Confirm</ion-button>
+                  </ion-buttons>
+                </ion-toolbar>
+              </ion-header>
+              <ion-content class="ion-padding">
+                <ion-item>
+                  <ion-label position="floating">E-mail</ion-label>
+                  <ion-input type="email" ngModel name="email" required email #emailCtrl2="ngModel"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="!emailCtrl.valid&&emailCtrl.touched" lines="none">
+                  <ion-label>Should be a valid email address</ion-label>
+                </ion-item>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+        </div>
         <ion-item *ngIf="!passwordCtrl.valid&&passwordCtrl.touched" lines="none">
           <ion-label>Should be at least 6 character</ion-label>
         </ion-item>

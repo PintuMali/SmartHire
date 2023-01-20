@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, concatMap, from, map, tap } from 'rxjs';
+import { BehaviorSubject, concatMap, from, map, switchMap, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from './user.model';
 import {Capacitor} from '@capacitor/core';
 import {Preferences} from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
+
 export interface AuthResponseData{
   kind:string,
   idToken:string,
@@ -14,6 +15,11 @@ export interface AuthResponseData{
   localId:string,
   expiresIn:string,
   registered?:boolean
+}
+
+export interface EmailVerifySendResponse{
+  email:string,
+  kind:string
 }
 
 interface userData{
@@ -28,10 +34,9 @@ interface userData{
 })
 export class AuthService implements OnDestroy {
   private _user= new  BehaviorSubject<User>(null);
-  private _role:string;
+  private _role:string=undefined;
   private activeLogoutTimer:any;
   private _roleId:string;
-
 
   get userIsAuthenticated(){
     return this._user.asObservable().pipe(map(user=>{
@@ -95,34 +100,42 @@ get token(){
   }
   signup(email:string,password:string,role:string,firstName:string,lastName:string){
     this._role=role;
+    let fetchedToken;
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebase.apiKey}`
     ,{email:email,password:password,returnSecureToken:true}
     ).pipe(tap(this.setUserData.bind(this)
     ),tap(data=>{
-      return this.http.post(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json`,{userId:data.localId,email:data.email,firstName:firstName,lastName:lastName,role:this._role}).subscribe(data=>{
+      return this.http.post(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?auth=${data.idToken}`,{userId:data.localId,email:data.email,firstName:firstName,lastName:lastName,role:this._role}).subscribe(data=>{
         this._roleId=data['name'];
 
       });
     }
-    ));
+    ),tap(respData=>{
+
+      fetchedToken=respData.idToken;
+
+     return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${environment.firebase.apiKey}`,{requestType:"VERIFY_EMAIL",idToken:fetchedToken}).subscribe();
+    }));
   }
   login(email:string,password:string,role:string){
-    return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="email"&equalTo="${email}"`).pipe(tap(userData=>{
 
-         this._role=Object.values(userData)[0].role
+    return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebase.apiKey}`
+    ,{email:email,password:password,returnSecureToken:true
+    }).pipe(tap(this.setUserData.bind(this)),concatMap(userData=>{
 
-       if(role!==this._role){
-       return null;
-       }
+      return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userData.localId}"&auth=${userData.idToken}`).pipe(tap(user=>{
 
-       }),concatMap(()=>{
-        return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebase.apiKey}`
-        ,{email:email,password:password,returnSecureToken:true
-        }).pipe(tap(data=>{
+      this._role=Object.values(user)[0].role
 
-        }),tap(this.setUserData.bind(this))
-        );
-       }));
+
+    if(role!==this._role){
+    return null;
+    }
+
+    }))
+    })
+    );
+;
 
   }
   logout(){
@@ -152,7 +165,28 @@ get token(){
     }
   }
 
+ deleteAccount(userId:string){
+  let fetchedToken;
+  return this.token.pipe(take(1),switchMap((token)=>{
+     fetchedToken=token;
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${environment.firebase.apiKey}`,{idToken:fetchedToken})
+  }),switchMap(()=>{
+    return this.http.get(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userId}"&auth=${fetchedToken}`);
+  }),switchMap(respData=>{
+    return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users/${Object.keys(respData)[0]}.json?auth=${fetchedToken}`)
+    }))
+}
 
+verifyAccount(){
+  return this.token.pipe(take(1),switchMap(token=>{
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${environment.firebase.apiKey}`,{idToken:token})
+  }))
+
+}
+
+forgetPassword(email:string){
+  return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${environment.firebase.apiKey}`,{"requestType":"PASSWORD_RESET","email":email});
+}
   private setUserData(userData:AuthResponseData){
 
     const expirationTime=new Date(new Date().getTime()+(+userData.expiresIn*1000));
