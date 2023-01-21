@@ -81,8 +81,12 @@
       <ion-row>
         <ion-col size-sm="6" offset-sm="3">
           <ion-item>
-            <ion-label position="floating">Experience Required:</ion-label>
-            <ion-input type="text" autocomplete autocorrect formControlName="experience" placeholder="e.g. Minimum 2-3 Years"></ion-input>
+            <ion-label position="floating">Experience Required(years):</ion-label>
+            <ion-select ngModel="None" name="role" interface="popover" formControlName="experience">
+              <ion-select-option value="None">None</ion-select-option>
+              <ion-select-option value="1-2">1-2</ion-select-option>
+              <ion-select-option value="2-3">2-3</ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -90,7 +94,11 @@
         <ion-col size-sm="6" offset-sm="3">
           <ion-item>
             <ion-label position="floating">Location(City):</ion-label>
-            <ion-input type="text" autocomplete autocorrect formControlName="location"></ion-input>
+            <ion-select ngModel="Work from home" interface="popover" formControlName="location">
+              <ion-select-option value="Work from home">Work from home</ion-select-option>
+              <ion-select-option value="Mumbai">Mumbai</ion-select-option>
+              <ion-select-option value="Pune">Pune</ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -98,8 +106,7 @@
         <ion-col size-sm="6"  offset-sm="3">
           <ion-item class="ion-margin-top">
             <ion-label position="floating">Job Type:</ion-label>
-            <ion-select ngModel="none" name="role" interface="popover" formControlName="jobType">
-              <ion-select-option value="Work from home">Work from home</ion-select-option>
+            <ion-select ngModel="Full-time" interface="popover" formControlName="jobType">
               <ion-select-option value="Full-time">Full-time</ion-select-option>
               <ion-select-option value="Part-time">Part-time</ion-select-option>
             </ion-select>

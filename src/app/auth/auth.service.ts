@@ -34,6 +34,9 @@ interface userData{
 })
 export class AuthService implements OnDestroy {
   private _user= new  BehaviorSubject<User>(null);
+  private _firstName:string;
+  private _lastName:string;
+  private _email:string;
   private _role:string=undefined;
   private activeLogoutTimer:any;
   private _roleId:string;
@@ -53,6 +56,16 @@ export class AuthService implements OnDestroy {
 
   get role(){
     return this._role
+  }
+
+  get firstName(){
+    return this ._firstName;
+  }
+  get lastName(){
+    return this ._lastName;
+  }
+  get email(){
+    return this ._email;
   }
 
   get userId(){
@@ -126,6 +139,9 @@ get token(){
       return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userData.localId}"&auth=${userData.idToken}`).pipe(tap(user=>{
 
       this._role=Object.values(user)[0].role
+      this._firstName=Object.values(user)[0].firstName
+      this._lastName=Object.values(user)[0].lastName
+      this._email=Object.values(user)[0].email
 
 
     if(role!==this._role){
@@ -203,4 +219,13 @@ private storeAuthData(userId:string,role:string,token:string,tokenExpirationDate
   Preferences.set({key:'authData',value:data})
 
 }
+
+userDetail(){
+  let fetchedUserId;
+  return this.userId.pipe(switchMap(userId=>{
+    fetchedUserId=userId;
+    return this.token
+  }),switchMap(token=>{
+    return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${fetchedUserId}"&auth=${token}`);
+  }))}
 }
