@@ -5,6 +5,7 @@ import { AlertController, IonModal, LoadingController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Images } from '../app.model';
 import { HomeService } from '../app.service';
+import {Preferences} from '@capacitor/preferences';
 import { AuthResponseData, AuthService, EmailVerifySendResponse } from './auth.service';
 
 @Component({
@@ -47,18 +48,32 @@ constructor(private authService:AuthService,private router:Router,private loadin
                   this.authService.verifyAccount().subscribe(resData=>{
                     User=Object.values(Object.values(resData)[1])[0]
                     if(User.emailVerified===true){
+                      console.log('verified');
 
-                      this.verifyRole(role)
+                    this.alertCtrl.create({
+                      header:'Account created succesfully!',
+                      message:'You can now log in with your new account',
+                      buttons:[{text:'Okay',handler:()=>{
+                        Preferences.remove({key:'authData'});
+                        this.isLogin=true;
+                      }}]
+                    }).then(alertEl=>{
+                      alertEl.present();
+                    })
                     }
                     else{
-                      this.authService.deleteAccount(User.localId).subscribe();
-                      this.alertCtrl.create({
-                        header:'An error occured',
-                        message:'Sign up Again and immediately verify your account by visiting link from your mail',
-                        buttons:['Okay']
-                      }).then(alertEl=>{
-                        alertEl.present();
-                      })
+                      this.authService.deleteAccount(User.localId).subscribe(()=>{
+                        this.alertCtrl.create({
+                          header:'An error occured',
+                          message:'Sign up Again and immediately verify your account by visiting link from your mail',
+                          buttons:[{text:'Okay',handler:()=>{
+                            Preferences.remove({key:'authData'});
+                          }}]
+                        }).then(alertEl=>{
+                          alertEl.present();
+                        })
+                      });
+
                       this.router.navigate(['/auth']);
                     }
                   })
@@ -68,7 +83,9 @@ constructor(private authService:AuthService,private router:Router,private loadin
                   this.router.navigate(['/auth'])
                   this.alertCtrl.create({header:'Sign up Again',
                   message:'To verify your account sign up again',
-                  buttons:['Okay']
+                  buttons:[{text:'Okay',handler:()=>{
+                    Preferences.remove({key:'authData'});
+                  }}]
                 }).then(alertEl=>{
                   alertEl.present();
                 })
@@ -87,6 +104,7 @@ constructor(private authService:AuthService,private router:Router,private loadin
         loadCtrl.dismiss();
         this.isLoading=false;
         this.verifyRole(role)
+
        }
 
 
