@@ -14,6 +14,7 @@ import { JobsService } from '../../jobs.service';
 export class JobDetailsPage implements OnInit {
   job:Job;
   isLoading=false;
+  private _currentJobId;
 
   constructor(private route:ActivatedRoute,private navCtrl:NavController,private router:Router,private authService:AuthService,private alertCtrl:AlertController,private jobService:JobsService) { }
 
@@ -26,6 +27,7 @@ export class JobDetailsPage implements OnInit {
       this.isLoading=true;
        this.jobService.getJob(paramMap.get('jobId'))
       .subscribe({next:job=>{
+        this._currentJobId=paramMap.get('jobId')
         this.job=job
         this.isLoading=false;
       },error:error=>{
@@ -38,22 +40,8 @@ export class JobDetailsPage implements OnInit {
     })
   }
   onApplyClick(){
-    // this.authService.userIsAuthenticated.pipe(take(1),tap(isAuhenticate=>{
-      // if(isAuhenticate){
-        this.router.navigateByUrl('/employee/jobs/job-details/resume-submission')
-    //   }
-    //   else{
-    //     this.alertCtrl.create({
-    //       header:'Login Required!!!',
-    //       message:'You need to login to apply',
-    //       buttons:[{text:'Okay',handler:()=>{
-    //         this.router.navigate(['/auth'])
-    //       }}]
-    //     }).then(alerEl=>{
-    //       alerEl.present();
-    //     })
-    //   }
-    // })).subscribe();
+        this.router.navigateByUrl(`/employee/jobs/${this._currentJobId}/resume-submission`)
+
 
 
   }
