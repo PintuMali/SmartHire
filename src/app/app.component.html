@@ -4,65 +4,60 @@
       <ion-toolbar>
         <ion-menu-toggle slot="primary">
 
-            <ion-button fill="clear">
-              <ion-icon name="close-outline" slot="icon-only"></ion-icon>
-            </ion-button>
+          <ion-button fill="clear">
+            <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+          </ion-button>
 
         </ion-menu-toggle>
 
         <ion-title class="ion-padding-top"><ion-img [src]="images[1].imageUrl"></ion-img></ion-title>
       </ion-toolbar>
-
-        <ion-card>
-          <ion-card-header>
-            <ion-menu-toggle>
-            <ion-item lines="none" routerLink="/auth">
-              <ion-icon slot="start" name="person-add-outline"></ion-icon>
-              <ion-label>Register</ion-label>
+      <ion-card>
+        <ion-card-header>
+          <ion-menu-toggle>
+            <ion-item>
+              <ion-icon slot="start" name="person-circle-outline" style="font-size: 30px;"></ion-icon>
+              <ion-label>
+                <h1>{{this.firstname}} {{this.lastname}}</h1>
+              </ion-label>
             </ion-item>
-            </ion-menu-toggle>
-            <ion-menu-toggle>
-            <ion-item lines="none" routerLink="/auth">
-              <ion-icon slot="start" name="person-outline"></ion-icon>
-              <ion-label>Login</ion-label>
-            </ion-item>
-            </ion-menu-toggle>
-          </ion-card-header>
-        </ion-card>
-    </ion-header>
-    <ion-content>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle style="font-size: 1.2em;">EXPLORE</ion-card-subtitle>
-            <ion-menu-toggle>
-            <ion-item lines="none" routerLink="/employee/jobs">
-              <ion-icon slot="start" name="person-add-outline"></ion-icon>
-              <ion-label>Fresher Jobs</ion-label>
+            <ion-item>
+              <ion-label>
+                <h3>{{this.email}}</h3>
+              </ion-label>
             </ion-item>
           </ion-menu-toggle>
-            <ion-card-subtitle style="font-size: 1.2em;">HELP & SUPPORT</ion-card-subtitle>
-            <ion-menu-toggle>
-            <ion-item lines="none">
-              <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-menu-toggle>
+          </ion-menu-toggle>
+        </ion-card-header>
+      </ion-card>
+    </ion-header>
+    <ion-content>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle style="font-size: 1.2em;">HELP & SUPPORT</ion-card-subtitle>
+          <ion-menu-toggle>
+            <ion-item lines="none" routerLink="/help-center">
+              <ion-icon slot="start" name="settings-outline"></ion-icon>
               <ion-label>Help Center</ion-label>
             </ion-item></ion-menu-toggle>
 
-            <ion-menu-toggle>
-            <ion-item lines="none">
-              <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-menu-toggle>
+            <ion-item lines="none"  routerLink="/reportcomplaint">
+              <ion-icon slot="start" name="chatbox-ellipses-outline"></ion-icon>
               <ion-label>Report a Complaint</ion-label>
             </ion-item>
             <ion-item lines="none">
-              <ion-icon slot="start" name="person-outline"></ion-icon>
+              <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
               <ion-label>About</ion-label>
             </ion-item>
             <ion-item lines="none" (click)="onLogout()" button>
               <ion-icon name="exit" slot="start"></ion-icon>
               <ion-label>Logout</ion-label>
             </ion-item>
-            </ion-menu-toggle>
-          </ion-card-header>
-        </ion-card>
+          </ion-menu-toggle>
+        </ion-card-header>
+      </ion-card>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="main"></ion-router-outlet>
