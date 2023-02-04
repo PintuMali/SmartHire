@@ -1,41 +1,64 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button  defaultHref="/employee/jobs"></ion-back-button>
+      <ion-back-button defaultHref="/employee/jobs"></ion-back-button>
     </ion-buttons>
     <ion-title class="special2">Resume</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<ion-grid>
-  <ion-row>
-    <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="4" offset-lg="4">
-      <ion-img [src]="images[1].imageUrl"></ion-img>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="5" offset="1">
-      <ion-img [src]="images[0].imageUrl"></ion-img>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="4" offset-lg="4">
+        <ion-img [src]="images[1].imageUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="5" offset="1">
+        <ion-img [src]="images[0].imageUrl"></ion-img>
       </ion-col>
       <ion-col size="5">
-      <ion-img [src]="images[0].imageUrl"></ion-img>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="7" size-sm="4" offset="2.5" offset-sm="4" size-md="4" offset-md4="">
-      <input class="" type="file"/>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="12">
-      <ion-button expand="block">Submit Application</ion-button>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="12">
-      <ion-button expand="block">Test</ion-button>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+        <ion-img [src]="images[0].imageUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+      <ion-row style="height: 80px">
+        <ion-col size="7" size-sm="4" offset="2.5" offset-sm="4" size-md="4" offset-md4="">
+          <input #fileInput class="" type="file" (change)="getFile($event)" />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-progress-bar *ngIf="show" [value]="progress"></ion-progress-bar>
+      </ion-row>
+
+      <div *ngIf="error" style="text-align: center;">
+        <P>RESUME SCORE : {{this.accuracy}}</P>
+        <p>Sorry! You are not eligible as your resume score is less than 30%</p>
+      </div>
+
+      <div *ngIf="show" style="text-align: center;">
+        <P>RESUME SCORE : {{this.accuracy}}</P>
+        <p>Congratulations! you are eligible to apply to this job. Click on submit button to complete your application.
+        </p>
+      </div>
+
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-button expand="block" [disabled]="!show" (click)="submit()">Submit Application</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-button expand="block" (click)="test()">Test</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-button expand="block" (click)="reset()">Reset</ion-button>
+        </ion-col>
+      </ion-row>
+
+  </ion-grid>
+
 </ion-content>

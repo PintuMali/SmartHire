@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'resume-submission',
     loadChildren: () => import('./resume-submission/resume-submission.module').then( m => m.ResumeSubmissionPageModule),canLoad:[AuthGuard]
+  },
+  {
+    path: ':jobId/resume-submission',
+    loadChildren: () => import('./resume-submission/resume-submission.module').then( m => m.ResumeSubmissionPageModule),canLoad:[AuthGuard]
   }
 
 ];
