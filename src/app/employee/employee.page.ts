@@ -8,6 +8,7 @@ import { Cities } from './cities.model';
 import { CitiesService } from './cities.service';
 import { Job } from './job.model';
 import { JobsService } from './jobs.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-employee',
@@ -20,7 +21,9 @@ export class EmployeePage implements OnInit,OnDestroy {
   cities:Cities[];
   categories:Categories[];
   private jobsSub:Subscription;
-  constructor(private jobService:JobsService,private router:Router,private citiesService:CitiesService,private categorisService:CategorieServive,private alertCtrl:AlertController) {
+  firstname: string;
+  lastname: string;
+  constructor(public authService: AuthService,private jobService:JobsService,private router:Router,private citiesService:CitiesService,private categorisService:CategorieServive,private alertCtrl:AlertController) {
 
     this.cities=this.citiesService.cities;
     this.categories=this.categorisService.categories;
@@ -29,7 +32,11 @@ export class EmployeePage implements OnInit,OnDestroy {
   ngOnInit() {
     this.jobsSub=this.jobService.jobs.subscribe(jobs=>{
       this.jobs=jobs
-
+      
+    this.authService.userDetail().subscribe((res:any) => {
+      this.firstname = res[Object.keys(res)[0]].firstName;
+      this.lastname = res[Object.keys(res)[0]].lastName;
+    });
 
     });
   }
@@ -72,6 +79,10 @@ export class EmployeePage implements OnInit,OnDestroy {
       if(this.jobsSub){
         this.jobsSub.unsubscribe();
       }
+  }
+
+  relod(){
+    location.reload();
   }
 
 }
