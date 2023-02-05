@@ -24,7 +24,7 @@
           </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" ngModel name="password" required minlength="6" #passwordCtrl="ngModel"></ion-input>
+          <ion-input type="password" ngModel name="password" required minlength="6" #passwordCtrl="ngModel" pattern="(?=.*[!@#$%^&*])(?=.*[0-9]).{6,}"></ion-input>
         </ion-item>
         <div *ngIf="isLogin" class="ion-text-right">
           <ion-button id="open-modal" color="primary" fill="clear">Forget Password</ion-button>
@@ -53,7 +53,7 @@
           </ion-modal>
         </div>
         <ion-item *ngIf="!passwordCtrl.valid&&passwordCtrl.touched" lines="none">
-          <ion-label>Should be at least 6 character</ion-label>
+          <ion-label>Should contain at least one special character, number and be at least 6 characters long</ion-label>
         </ion-item>
         <div *ngIf="!isLogin">
           <ion-item>

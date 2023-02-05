@@ -12,6 +12,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <div style="text-align: center;">
+    <h1>Welcome {{this.firstname}} {{this.lastname}}!</h1>
+    <ion-button size="default" (click)="relod()">Reload</ion-button>
+  </div>
   <ion-grid class="ion-no-padding" *ngIf="!isLoading && jobs.length>0">
     <ion-row>
       <ion-col>
@@ -172,10 +176,5 @@
       </ion-item>
   </ion-col>
 </ion-row> -->
-<ion-row>
-  <ion-col size="12" class="ion-text-center">
-    <a routerLink="/employee/jobs">View all jobs</a>
-  </ion-col>
-</ion-row>
   </ion-grid>
 </ion-content>

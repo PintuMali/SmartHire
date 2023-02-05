@@ -24,6 +24,14 @@ const routes: Routes = [
     path: 'employer',
     loadChildren: () => import('./employer/employer.module').then( m => m.EmployerPageModule),canLoad:[AuthGuard]
   },
+  {
+    path: 'help-center',
+    loadChildren: () => import('./help-center/help-center.module').then( m => m.HelpCenterPageModule),canLoad:[AuthGuard]
+  },
+  {
+    path: 'reportcomplaint',
+    loadChildren: () => import('./reportcomplaint/reportcomplaint.module').then( m => m.ReportcomplaintPageModule),canLoad:[AuthGuard]
+  },
 ];
 
 @NgModule({

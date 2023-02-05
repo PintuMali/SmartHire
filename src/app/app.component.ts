@@ -14,6 +14,11 @@ export class AppComponent {
   images:Images[];
   private authSub:Subscription;
   private previousAuthState=false;
+
+  firstname: string;
+  lastname: string;
+  email: string;
+
   constructor(private homeService:HomeService,private authService:AuthService,private router:Router) {
     this.images=homeService.images;
   }
@@ -28,6 +33,14 @@ export class AppComponent {
       }
       this.previousAuthState=isAuth;
     });
+
+
+    this.authService.userDetail().subscribe((res:any) => {
+      this.email = res[Object.keys(res)[0]].email;
+      this.firstname = res[Object.keys(res)[0]].firstName;
+      this.lastname = res[Object.keys(res)[0]].lastName;
+  });
+  
   }
   ngOnDestroy(): void {
       if(this.authSub){
