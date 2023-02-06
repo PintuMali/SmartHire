@@ -32,7 +32,7 @@ export class EmployeePage implements OnInit,OnDestroy {
   ngOnInit() {
     this.jobsSub=this.jobService.jobs.subscribe(jobs=>{
       this.jobs=jobs
-      
+
     this.authService.userDetail().subscribe((res:any) => {
       this.firstname = res[Object.keys(res)[0]].firstName;
       this.lastname = res[Object.keys(res)[0]].lastName;
@@ -40,7 +40,6 @@ export class EmployeePage implements OnInit,OnDestroy {
 
     });
   }
-
   ionViewWillEnter(){
     this.isLoading=true;
     this.jobService.fetchJobs().subscribe({next:()=>{

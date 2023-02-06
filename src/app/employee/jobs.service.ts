@@ -87,7 +87,8 @@ export class JobsService{
   }
 
   get jobs(){
-    return this._jobs.asObservable();
+    return this._jobs.asObservable().pipe(tap(job=>{console.log(job);
+    }));
   }
   getJob(jobId:string){
     return this.authService.token.pipe(take(1),switchMap(token=>{

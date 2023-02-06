@@ -6,6 +6,7 @@ import { User } from './user.model';
 import {Capacitor} from '@capacitor/core';
 import {Preferences} from '@capacitor/preferences';
 import { AlertController } from '@ionic/angular';
+import { UserDetail } from './userDetail.model';
 
 export interface AuthResponseData{
   kind:string,
@@ -22,18 +23,12 @@ export interface EmailVerifySendResponse{
   kind:string
 }
 
-interface userData{
-  email:string,
-  firstName:string,
-  lastName:string,
-  role:string,
-  userId:string
-}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
   private _user= new  BehaviorSubject<User>(null);
+  private _userDetail =new BehaviorSubject<UserDetail[]>([]);
   private _firstName:string;
   private _lastName:string;
   private _email:string;
@@ -41,6 +36,12 @@ export class AuthService implements OnDestroy {
   private activeLogoutTimer:any;
   private _roleId:string;
 
+  get userDetails(){
+    return this._userDetail.asObservable().pipe(tap(user=>{
+      console.log(user);
+
+    }));
+  }
   get userIsAuthenticated(){
     return this._user.asObservable().pipe(map(user=>{
       if(user){
@@ -136,7 +137,7 @@ get token(){
     ,{email:email,password:password,returnSecureToken:true
     }).pipe(tap(this.setUserData.bind(this)),concatMap(userData=>{
 
-      return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userData.localId}"&auth=${userData.idToken}`).pipe(tap(user=>{
+      return this.http.get<{[key:string]:UserDetail}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userData.localId}"&auth=${userData.idToken}`).pipe(tap(user=>{
 
       this._role=Object.values(user)[0].role
       this._firstName=Object.values(user)[0].firstName
@@ -226,6 +227,14 @@ userDetail(){
     fetchedUserId=userId;
     return this.token
   }),switchMap(token=>{
-    return this.http.get<{[key:string]:userData}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${fetchedUserId}"&auth=${token}`);
+    return this.http.get<{[key:string]:UserDetail}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${fetchedUserId}"&auth=${token}`).pipe(map((user)=>{
+      const userDetail=[];
+      for(const key in user){
+        userDetail.push(new UserDetail(user[key].email,user[key].firstName,user[key].lastName,user[key].role,user[key].userId))
+      }
+      return userDetail;
+    }),tap(userDetail=>{
+      this._userDetail.next(userDetail)
+    }));
   }))}
 }

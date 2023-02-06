@@ -14,7 +14,6 @@
 <ion-content>
   <div style="text-align: center;">
     <h1>Welcome {{this.firstname}} {{this.lastname}}!</h1>
-    <ion-button size="default" (click)="relod()">Reload</ion-button>
   </div>
   <ion-grid class="ion-no-padding" *ngIf="!isLoading && jobs.length>0">
     <ion-row>

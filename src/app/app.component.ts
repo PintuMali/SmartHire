@@ -35,12 +35,12 @@ export class AppComponent {
     });
 
 
-    this.authService.userDetail().subscribe((res:any) => {
+    this.authService.userDetails.subscribe((res:any) => {
       this.email = res[Object.keys(res)[0]].email;
       this.firstname = res[Object.keys(res)[0]].firstName;
       this.lastname = res[Object.keys(res)[0]].lastName;
   });
-  
+
   }
   ngOnDestroy(): void {
       if(this.authSub){

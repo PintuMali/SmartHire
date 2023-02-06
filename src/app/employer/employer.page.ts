@@ -24,5 +24,5 @@ export class EmployerPage implements OnInit {
     this.authService.logout();
 
   }
-  
+
 }
