@@ -37,7 +37,7 @@ export class JobsService{
       const jobs=[];
       for(const key in respData){
         if(respData.hasOwnProperty(key)){
-          jobs.push(new Job(key,respData[key].companyName,respData[key].companyLogo,respData[key].jobProfile,respData[key].jobSalary,new Date(respData[key].jobDeadline),respData[key].jobDescription,respData[key].jobSkills,respData[key].jobExperience,respData[key].jobLocation,respData[key].jobType,respData[key].userId))
+          jobs.push(new Job(key,respData[key].companyName,respData[key].companyLogo,respData[key].jobProfile,respData[key].jobSalary,new Date(respData[key].jobDeadline),respData[key].jobDescription,respData[key].jobSkills,respData[key].jobExperience,respData[key].jobLocation,respData[key].jobType,respData[key].userId,true))
         }
       }
       return jobs;
@@ -77,7 +77,7 @@ export class JobsService{
       const jobs=[];
       for(const key in respData){
         if(respData.hasOwnProperty(key)){
-          jobs.push(new Job(key,respData[key].companyName,respData[key].companyLogo,respData[key].jobProfile,respData[key].jobSalary,new Date(respData[key].jobDeadline),respData[key].jobDescription,respData[key].jobSkills,respData[key].jobExperience,respData[key].jobLocation,respData[key].jobType,respData[key].userId))
+          jobs.push(new Job(key,respData[key].companyName,respData[key].companyLogo,respData[key].jobProfile,respData[key].jobSalary,new Date(respData[key].jobDeadline),respData[key].jobDescription,respData[key].jobSkills,respData[key].jobExperience,respData[key].jobLocation,respData[key].jobType,respData[key].userId,true))
         }
       }
       return jobs;
@@ -87,15 +87,14 @@ export class JobsService{
   }
 
   get jobs(){
-    return this._jobs.asObservable().pipe(tap(job=>{console.log(job);
-    }));
+    return this._jobs.asObservable();
   }
   getJob(jobId:string){
     return this.authService.token.pipe(take(1),switchMap(token=>{
       return this.http.get<JobData>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?auth=${token}`)
     }),
       map(jobData=>{
-        return new Job(jobId,jobData.companyName,jobData.companyLogo,jobData.jobProfile,jobData.jobSalary,new Date(jobData.jobDeadline),jobData.jobDescription,jobData.jobSkills,jobData.jobExperience,jobData.jobLocation,jobData.jobType,jobData.userId)
+        return new Job(jobId,jobData.companyName,jobData.companyLogo,jobData.jobProfile,jobData.jobSalary,new Date(jobData.jobDeadline),jobData.jobDescription,jobData.jobSkills,jobData.jobExperience,jobData.jobLocation,jobData.jobType,jobData.userId,true)
       })
     );
   }
@@ -110,7 +109,7 @@ export class JobsService{
       if(!fetchedUserId){
         throw new Error('No user id found');
       }
-       newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,fetchedUserId,featureImage);
+       newJob=new Job(Math.random().toString(),companyName,companyLogo,jobProfile,jobSalary,jobDeadline,jobDescription,jobSkills,jobExperience,jobLocation,jobType,fetchedUserId,true,featureImage);
       return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs.json?auth=${token}`,{...newJob, jobId:null});
     }),switchMap(respData=>{
       generatedJobId=respData.name;
@@ -140,7 +139,7 @@ export class JobsService{
       const updatedJobIndex=jobs.findIndex(jb=>jb.jobId===jobId);
       updatedJobs=[...jobs]
       const oldJob=updatedJobs[updatedJobIndex];
-      updatedJobs[updatedJobIndex]=new Job(oldJob.jobId,oldJob.companyName,oldJob.companyLogo,oldJob.jobProfile,salary,deadline,jobDescription,jobSkills,jobExperience,oldJob.jobLocation,oldJob.jobType,oldJob.userId,oldJob.featureImage);
+      updatedJobs[updatedJobIndex]=new Job(oldJob.jobId,oldJob.companyName,oldJob.companyLogo,oldJob.jobProfile,salary,deadline,jobDescription,jobSkills,jobExperience,oldJob.jobLocation,oldJob.jobType,oldJob.userId,true,oldJob.featureImage);
       return this.http.put(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/posted-jobs/${jobId}.json?auth=${fetchedToken}`,
       {...updatedJobs[updatedJobIndex], jobId:null}
       );

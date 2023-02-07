@@ -11,6 +11,7 @@ export class Job{
     public jobLocation:string,
     public jobType:string,
     public userId:string,
+    public  hasEnoughTime:boolean,
     public featureImage?:string[],
    ){}
 }

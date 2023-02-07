@@ -37,10 +37,7 @@ export class AuthService implements OnDestroy {
   private _roleId:string;
 
   get userDetails(){
-    return this._userDetail.asObservable().pipe(tap(user=>{
-      console.log(user);
-
-    }));
+    return this._userDetail.asObservable();
   }
   get userIsAuthenticated(){
     return this._user.asObservable().pipe(map(user=>{
