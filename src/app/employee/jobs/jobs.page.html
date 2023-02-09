@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar *ngIf="hasSearchBarOpen">
-    <ion-searchbar style="margin-top: 20px;" show-cancel-button="always" (ionCancel)="onCancelClick($event)"  placeholder="Category,location or company..."></ion-searchbar>
+    <ion-searchbar style="margin-top: 20px;" #searchValue (keyup.enter)="search(searchValue.value)" show-cancel-button="always" (ionCancel)="onCancelClick($event)"  placeholder="Category,location or company..."></ion-searchbar>
     </ion-toolbar>
     <ion-toolbar *ngIf="!hasSearchBarOpen">
     <ion-buttons  slot="start">
@@ -22,8 +22,8 @@
 </ion-header>
 
 <ion-content>
-<ion-card *ngFor="let job of jobs">
-  <div *ngIf="!isLoading && jobs.length>0">
+<ion-card *ngFor="let job of filtered">
+  <div *ngIf="!isLoading && filtered.length>0">
   <ion-card-header class="ion-no-padding ion-margin-top ion-margin-horizontal">
     <ion-grid class="ion-no-padding">
       <ion-row class="ion-no-padding ion-align-items-center">
@@ -70,7 +70,7 @@
     </ion-grid>
   </ion-card-content>
   </div>
-  <div *ngIf="!isLoading &&(!jobs||jobs.length<=0)">
+  <div *ngIf="!isLoading &&(!filtered||filtered.length<=0)">
     <p class="ion-text-center">No Jobs Available, Try Again Later</p>
   </div>
 
