@@ -57,9 +57,6 @@ export class JobsService{
         return storageRef.getDownloadURL();
       }));
     }));
-
-
-
   }
 
   fetchEmployerJobs(){
@@ -167,6 +164,21 @@ export class JobsService{
 
   deleteImage(imgUrl:string){
     this.storage.refFromURL(imgUrl).delete();
+  }
+
+
+  applyJob(jobId:string,jobResumeUrl,fullname:string,score:string,employeeId:string){
+    let fetchedUserId:string;
+    return this.authService.userId.pipe(take(1),switchMap(userId=>{
+      fetchedUserId=userId;
+      return this.authService.token
+    }),take(1),switchMap(token=>{
+      if(!fetchedUserId){
+        throw new Error('No user id found');
+      }
+      return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?auth=${token}`,{"jobId":jobId,"jobResumeUrl":jobResumeUrl,"fullname":fullname,"score":score});
+    }));
+
   }
 }
 

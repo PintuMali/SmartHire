@@ -79,8 +79,6 @@ export class PostJobPage implements OnInit {
       return this.jobService.addJob(this.form.value.title,data,this.form.value.profile,this.form.value.salary,this.form.value.deadline,this.form.value.description,this.form.value.skills,this.form.value.experience,this.form.value.location,this.form.value.jobType);
       }))
       .subscribe(()=>{
-        console.log(`Subscribed`);
-
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['/employer/jobs-posted'])

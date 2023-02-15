@@ -15,6 +15,8 @@ export class JobDetailsPage implements OnInit {
   job:Job;
   isLoading=false;
   private _currentJobId;
+  private _userId:string
+  private _fullname:string
 
   constructor(private route:ActivatedRoute,private navCtrl:NavController,private router:Router,private authService:AuthService,private alertCtrl:AlertController,private jobService:JobsService) { }
 
@@ -41,6 +43,14 @@ export class JobDetailsPage implements OnInit {
   }
   onApplyClick(){
         this.router.navigateByUrl(`/employee/jobs/${this._currentJobId}/resume-submission`)
+
+        this.authService.userDetails.subscribe(userDetail=>{
+         this._userId=userDetail[0].userId;
+          this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
+        })
+        this.jobService.applyJob(this._currentJobId,"url",this._fullname,"45%",this._userId).subscribe()
+        console.log("done");
+
 
 
 
