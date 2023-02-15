@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { IonSearchbar } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, IonSearchbar, NavController } from '@ionic/angular';
 import { alertController } from '@ionic/core';
 import { map, Subscription } from 'rxjs';
 import { Job } from '../job.model';
@@ -13,14 +13,13 @@ import { JobsService } from '../jobs.service';
   styleUrls: ['./jobs.page.scss'],
 })
 export class JobsPage implements OnInit,OnDestroy {
-  months:string[]=['January','February','March','April','May','June','July','August','September','October','November','December']
   hasSearchBarOpen:boolean=false;
   jobs:Job[];
   filtered:Job[];
   isLoading=false;
   @ViewChild('searchValue') searchValue:IonSearchbar
   private jobsSub:Subscription;
-  constructor(private jobsService:JobsService,private router:Router) {
+  constructor(private jobsService:JobsService,private router:Router,private route:ActivatedRoute,private navCtrl:NavController,private alertCtrl:AlertController) {
 
 
    }
@@ -28,6 +27,8 @@ export class JobsPage implements OnInit,OnDestroy {
   ngOnInit() {
     this.jobsSub=this.jobsService.jobs.subscribe(job=>{
       this.jobs=job;
+
+
       this.jobs=this.jobs.filter(job=>{
           let receivedDate= new Date(job.jobDeadline).getTime()
           let currentDate=new Date().getTime();
@@ -41,8 +42,53 @@ export class JobsPage implements OnInit,OnDestroy {
             }
             return currentDate<receivedDate;
       })
-      this.filtered=this.jobs;
+      this.route.paramMap.subscribe(paramMap=>{
+        if(!(this.route['_routerState'].snapshot.url==`/employee/filter/${paramMap.get(`ciId`)}`)){
+          this.filtered=this.jobs
+        }
+      })
+
     });
+
+    this.route.paramMap.subscribe(paramMap=>{
+
+
+      if(this.route['_routerState'].snapshot.url==`/employee/filter/${paramMap.get(`ciId`)}`){
+        if(!paramMap.has('ciId')){
+          this.navCtrl.navigateBack('/employee');
+          return;
+        }
+        if(this.jobsService.filter==="city"){
+          this.filtered=this.jobs.filter(job=>job.jobLocation===paramMap.get('ciId'))
+        }
+        else{
+
+          this.filtered=this.jobs.filter(job=>{
+            let jobSkill:string="";
+            for(let skill of job.jobSkills){
+              if(skill.toUpperCase()===paramMap.get('ciId').toUpperCase()){
+                jobSkill=skill.toUpperCase();
+              }
+            }
+           return jobSkill.toUpperCase()===paramMap.get('ciId').toUpperCase()
+          }
+           )
+        }
+
+       if(this.filtered.length<=0){
+        this.alertCtrl.create({header:'Error',
+      message:'No Matched Found',
+    buttons:[{text:'Okay',handler:()=>{
+      this.router.navigate([`/employee`])
+    }}]}).then(alertEl=>{
+      alertEl.present();
+    })
+       }
+      }
+      else{
+        this.filtered=this.jobs;
+      }
+    })
   }
   ionViewWillEnter(){
     this.isLoading=true;
@@ -78,7 +124,7 @@ search(searchTerm){
             jobSkill=skill.toUpperCase();
           }
         }
-        return job.jobLocation.toUpperCase()===searchTerm.toUpperCase() || job.companyName.toUpperCase()===searchTerm.toUpperCase() || jobSkill===searchTerm.toUpperCase();
+        return job.jobLocation.toUpperCase()===searchTerm.toUpperCase() || job.companyName.toUpperCase()===searchTerm.toUpperCase() || jobSkill===searchTerm.toUpperCase() || job.jobProfile.toUpperCase()===searchTerm.toUpperCase();
       })
       if(this.filtered.length===0){
         alertController.create({header:'Error 404',

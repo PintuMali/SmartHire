@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { Categories } from './categories.model';
 import { CategorieServive } from './categories.service';
 import { Cities } from './cities.model';
@@ -23,6 +23,7 @@ export class EmployeePage implements OnInit,OnDestroy {
   private jobsSub:Subscription;
   firstname: string;
   lastname: string;
+
   constructor(public authService: AuthService,private jobService:JobsService,private router:Router,private citiesService:CitiesService,private categorisService:CategorieServive,private alertCtrl:AlertController) {
 
     this.cities=this.citiesService.cities;
@@ -64,12 +65,13 @@ export class EmployeePage implements OnInit,OnDestroy {
     console.log(jobId);
 
   }
-  onCityClick(cityId:string){
-    this.router.navigateByUrl('/employee/filter/'+cityId);
-    console.log(cityId);
+  onCityClick(cityName:string,filter:string){
+    this.jobService.filter=filter
+    this.router.navigateByUrl('/employee/filter/'+cityName);
 
   }
-  onCategoryClick(categoryId:string){
+  onCategoryClick(categoryId:string,filter:string){
+    this.jobService.filter=filter
     this.router.navigateByUrl('/employee/filter/'+categoryId);
     console.log(categoryId);
 
@@ -78,10 +80,6 @@ export class EmployeePage implements OnInit,OnDestroy {
       if(this.jobsSub){
         this.jobsSub.unsubscribe();
       }
-  }
-
-  relod(){
-    location.reload();
   }
 
 }

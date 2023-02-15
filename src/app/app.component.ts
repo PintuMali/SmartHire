@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Images } from './app.model';
 import { HomeService } from './app.service';
@@ -21,11 +22,20 @@ export class AppComponent {
   lastname: string;
   email: string;
 
-  constructor(private homeService:HomeService,private authService:AuthService,private router:Router) {
+  constructor(private homeService:HomeService,private authService:AuthService,private router:Router,private alertController:AlertController) {
     this.images=homeService.images;
   }
   onLogout(){
-    this.authService.logout();
+    this.alertController.create({
+      header:'Logout',
+      message:'Are you Sure ?',
+      buttons:[{text:'Yes',handler:()=>{
+        this.authService.logout();
+      }},{text:'No'}]
+    }).then(alertEl=>{
+      alertEl.present()
+    })
+
 
   }
   ngOnInit(): void {
@@ -36,7 +46,12 @@ export class AppComponent {
       this.previousAuthState=isAuth;
     });
 
+this.authService.userId.subscribe(userId=>{
+  if(userId){
     this.authService.userDetail().subscribe();
+  }
+})
+
     this.userDetailSub=this.authService.userDetails.subscribe((res:any) => {
       const userDetail=res[Object.keys(res)[0]]
       if(userDetail){

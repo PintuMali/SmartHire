@@ -28,6 +28,7 @@ userId: string
 export class JobsService{
   private _jobs= new BehaviorSubject<Job[]>([]);
   private _basePath='/images'
+  filter:string;
   constructor(private authService:AuthService,private http:HttpClient,private db:AngularFireDatabase,private storage:AngularFireStorage){}
   fetchJobs(){
     return this.authService.token.pipe(switchMap(token=>{
