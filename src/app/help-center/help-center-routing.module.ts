@@ -13,7 +13,20 @@ const routes: Routes = [
   {
     path: 'technicalissues',
     loadChildren: () => import('./technicalissues/technicalissues.module').then( m => m.TechnicalissuesPageModule),canLoad:[AuthGuard]
+  },
+  {
+    path: 'findjobs',
+    loadChildren: () => import('./findjobs/findjobs.module').then( m => m.FindjobsPageModule),canLoad:[AuthGuard]
+  },
+  {
+    path: 'account',
+    loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule),canLoad:[AuthGuard]
+  },
+  {
+    path: 'further-assistance',
+    loadChildren: () => import('./further-assistance/further-assistance.module').then( m => m.FurtherAssistancePageModule),canLoad:[AuthGuard]
   }
+
 ];
 
 @NgModule({

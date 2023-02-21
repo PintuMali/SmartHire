@@ -1,33 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AuthService } from 'src/app/auth/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore/'; 
-import { AuthService } from '../auth/auth.service';
 import { AlertController, NavController } from '@ionic/angular';
 
-
 @Component({
-  selector: 'app-reportcomplaint',
-  templateUrl: './reportcomplaint.page.html',
-  styleUrls: ['./reportcomplaint.page.scss'],
+  selector: 'app-further-assistance',
+  templateUrl: './further-assistance.page.html',
+  styleUrls: ['./further-assistance.page.scss'],
 })
-export class ReportcomplaintPage implements OnInit {
-  companyName: string;
-  selectedDepartment: string;
-  complaintDescription: string;
+export class FurtherAssistancePage implements OnInit {
+  QueryDescription: string;
   userId : string;
   firstname: string;
   lastname: string;
+  selectedDepartment:string;
 
   constructor(private alertCtrl:AlertController,public authService: AuthService,private firestore: AngularFirestore) {}
 
    submitComplaint() {
-      this.firestore.collection('complaints').add({
+      this.firestore.collection('Queries').add({
       userId:this.userId,
       firstname:this.firstname,
       lastname:this.lastname,
-      companyName: this.companyName,
-      department: this.selectedDepartment,
-      description: this.complaintDescription,
+      subject: this.selectedDepartment,
+      description: this.QueryDescription,
       createdAt: new Date()
     }).then(() => {
       this.alertCtrl.create({
@@ -50,6 +46,7 @@ export class ReportcomplaintPage implements OnInit {
       });
     });
   }
+
 
 
   ngOnInit() {

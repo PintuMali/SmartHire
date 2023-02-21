@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Further Assistance?
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <ion-card>
+    <ion-item>Subject</ion-item>
+    
+    <ion-item>
+      <ion-label>Choose subject</ion-label>
+      <ion-select [(ngModel)]="selectedDepartment">
+        <ion-select-option value="Account/Profile">Account/Profile</ion-select-option>
+        <ion-select-option value="Find Jobs">Find Jobs</ion-select-option>
+        <ion-select-option value="My Applications">My Applications</ion-select-option>
+        <ion-select-option value="Technical Issues">Technical Issues</ion-select-option>
+        <ion-select-option value="Others">Others</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-textarea style="min-height: 300px;
+      width: 100%;
+      font-size: 20px;
+      line-height: 30px;
+      overflow-y: scroll;" [(ngModel)]="QueryDescription" placeholder="Please type your query here"></ion-textarea>
+    </ion-item>
+    
+    <ion-button (click)="submitComplaint()" expand="block">Send</ion-button>
+  </ion-card>
+</ion-content>
+
+
+
