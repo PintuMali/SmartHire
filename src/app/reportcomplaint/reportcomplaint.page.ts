@@ -21,34 +21,48 @@ export class ReportcomplaintPage implements OnInit {
   constructor(private alertCtrl:AlertController,public authService: AuthService,private firestore: AngularFirestore) {}
 
    submitComplaint() {
+
+    if(this.companyName && this.selectedDepartment && this.complaintDescription){
       this.firestore.collection('complaints').add({
-      userId:this.userId,
-      firstname:this.firstname,
-      lastname:this.lastname,
-      companyName: this.companyName,
-      department: this.selectedDepartment,
-      description: this.complaintDescription,
-      createdAt: new Date()
-    }).then(() => {
-      this.alertCtrl.create({
-        header: 'Success',
-        message: 'Your Query has been submitted. We will get back to you soon',
-        cssClass: 'success-alert-message',
-        buttons: [{text: 'Okay'}]
-      }).then(alertEl => {
-        alertEl.present();
+        userId:this.userId,
+        firstname:this.firstname,
+        lastname:this.lastname,
+        companyName: this.companyName,
+        department: this.selectedDepartment,
+        description: this.complaintDescription,
+        createdAt: new Date()
+      }).then(() => {
+        this.alertCtrl.create({
+          header: 'Success',
+          message: 'Your Complaint has been submitted. We will get back to you soon',
+          cssClass: 'success-alert-message',
+          buttons: [{text: 'Okay'}]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      })
+      .catch((error) => {
+        this.alertCtrl.create({
+          header: 'Error',
+          message: '`There was an error submitting your query: ${error.message}. Please try again later.',
+          cssClass: 'error-alert-message',
+          buttons: [{text: 'Okay'}]
+        }).then(alertEl => {
+          alertEl.present();
+        });
       });
-    })
-    .catch((error) => {
+    }
+    else{
       this.alertCtrl.create({
         header: 'Error',
-        message: '`There was an error submitting your query: ${error.message}. Please try again later.',
+        message: 'Please fill all the fields',
         cssClass: 'error-alert-message',
         buttons: [{text: 'Okay'}]
       }).then(alertEl => {
         alertEl.present();
       });
-    });
+    }
+   
   }
 
 
