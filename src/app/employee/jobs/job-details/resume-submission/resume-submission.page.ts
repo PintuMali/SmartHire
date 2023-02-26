@@ -19,6 +19,10 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ResumeSubmissionPage implements OnInit {
+  private _currentJobId;
+  private _userId:string
+  private _fullname:string
+  
   accuracy:number = 0;
   jobskill:string = '';
   job:Job;
@@ -124,18 +128,29 @@ export class ResumeSubmissionPage implements OnInit {
   }
 
   submit(){
-    this.alertCtrl.create({
-      header:'Success',
-      message:'Your application has been submitted. You may now browse different jobs.',
-      cssClass: 'success-alert-message',
-      buttons:[{text:'Okay',handler:()=>{
-        this.router.navigate(['/employee']);
-      }}]
-    }).then(alertEl=>{
-      alertEl.present();
-    })
-  }
+  //   this.authService.userDetails.subscribe(userDetail=>{
+  //     this._userId=userDetail[0].userId;
+  //      this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
+  //    })
+  //    this.jobService.applyJob(this._currentJobId,"url",this._fullname,"45%",this._userId).subscribe()
+  //    console.log("done");
+  //   this.alertCtrl.create({
+  //     header:'Success',
+  //     message:'Your application has been submitted. You may now browse different jobs.',
+  //     cssClass: 'success-alert-message',
+  //     buttons:[{text:'Okay',handler:()=>{
+  //       this.router.navigate(['/employee']);
+  //     }}]
+  //   }).then(alertEl=>{
+  //     alertEl.present();
+  //   })
+  // }
+  this.authService.userDetails.subscribe(userDetail=>{
+    this._userId=userDetail[0].userId;
+     this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
+   })
+  this.jobService.applyJobWithResume(this.jobid,this.file,this._fullname,this.accuracy).subscribe()
   
 
 }
-
+}

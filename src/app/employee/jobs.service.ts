@@ -59,6 +59,17 @@ export class JobsService{
     }));
   }
 
+  uploadDocx(docx: File){
+    const filePath = `resume/${docx['name']}`;
+    const storageRef = this.storage.ref(filePath);
+    const uploadtask= from(this.storage.upload(filePath, docx));
+    return this.authService.token.pipe(switchMap(token=>{
+      return uploadtask.pipe(concatMap(()=>{
+        return storageRef.getDownloadURL();
+      }));
+    }));
+  }
+
   fetchEmployerJobs(){
     let fetchedUserId:string
     return this.authService.userId.pipe(take(1),switchMap(userId=>{
@@ -167,18 +178,96 @@ export class JobsService{
   }
 
 
-  applyJob(jobId:string,jobResumeUrl,fullname:string,score:string,employeeId:string){
-    let fetchedUserId:string;
-    return this.authService.userId.pipe(take(1),switchMap(userId=>{
-      fetchedUserId=userId;
-      return this.authService.token
-    }),take(1),switchMap(token=>{
-      if(!fetchedUserId){
-        throw new Error('No user id found');
-      }
-      return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?auth=${token}`,{"jobId":jobId,"jobResumeUrl":jobResumeUrl,"fullname":fullname,"score":score});
-    }));
+  // applyJob(jobId:string,jobResumeUrl,fullname:string,score:string,employeeId:string){
+  //   let fetchedUserId:string;
+  //   return this.authService.userId.pipe(take(1),switchMap(userId=>{
+  //     fetchedUserId=userId;
+  //     return this.authService.token
+  //   }),take(1),switchMap(token=>{
+  //     if(!fetchedUserId){
+  //       throw new Error('No user id found');
+  //     }
+  //     return this.http.post<{name:string}>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?auth=${token}`,{"jobId":jobId,"jobResumeUrl":jobResumeUrl,"fullname":fullname,"score":score});
+  //   }));
 
+  // }
+
+  // uploadDocx(docx: File){
+  //   const filePath = `resume/${docx['name']}`;
+  //   const storageRef = this.storage.ref(filePath);
+  //   const uploadtask= from(this.storage.upload(filePath, docx));
+  //   return this.authService.token.pipe(switchMap(token=>{
+  //     return uploadtask.pipe(concatMap(()=>{
+  //       return storageRef.getDownloadURL();
+  //     }));
+  //   }));
+  // }
+
+  // applyJobWithResume(jobId: string, docx: File, fullname: string, score: string) {
+  //   let fetchedUserId: string;
+  //   const resumeFilePath = `resume/${docx['name']}`;
+  //   const resumeStorageRef = this.storage.ref(resumeFilePath);
+  
+  //   return this.authService.userId.pipe(
+  //     take(1),
+  //     switchMap(userId => {
+  //       fetchedUserId = userId;
+  //       return this.authService.token;
+  //     }),
+  //     take(1),
+  //     switchMap(token => {
+  //       if (!fetchedUserId) {
+  //         throw new Error('No user id found');
+  //       }
+  //       const uploadTask = from(this.storage.upload(resumeFilePath, docx));
+  //       return this.authService.token.pipe(
+  //         switchMap(() => resumeStorageRef.getDownloadURL()),
+  //         concatMap(resumeUrl => {
+  //           return this.http.post<{ name: string }>(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?auth=${token}`, {
+  //             jobId: jobId,
+  //             jobResumeUrl: resumeUrl,
+  //             fullname: fullname,
+  //             score: score
+  //           });
+  //         })
+  //       );
+  //     })
+  //   );
+  //   console.log("done");
+  // }
+
+  applyJobWithResume(jobId: string, docx: File, fullname: string, score: number) {
+    return this.authService.token.pipe(
+      switchMap(token => {
+        const filePath = `resume/${docx['name']}`;
+        const storageRef = this.storage.ref(filePath);
+        const uploadTask = from(this.storage.upload(filePath, docx));
+        let fetchedUserId: string;
+        return this.authService.userId.pipe(
+          take(1),
+          switchMap(userId => {
+            fetchedUserId = userId;
+            if (!fetchedUserId) {
+              throw new Error('No user id found');
+            }
+            return uploadTask.pipe(
+              concatMap(() => {
+                return storageRef.getDownloadURL().pipe(
+                  switchMap(downloadUrl => {
+                    const data = { jobId, jobResumeUrl: downloadUrl, fullname, score , userId: fetchedUserId};
+                    return this.http.post<{ name: string }>(
+                      `https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?auth=${token}`,data);
+                  })
+                );
+              })
+            );
+          })
+        );
+      })
+    );
   }
+  
+  
+  
 }
 

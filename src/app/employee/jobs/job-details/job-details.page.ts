@@ -44,12 +44,7 @@ export class JobDetailsPage implements OnInit {
   onApplyClick(){
         this.router.navigateByUrl(`/employee/jobs/${this._currentJobId}/resume-submission`)
 
-        this.authService.userDetails.subscribe(userDetail=>{
-         this._userId=userDetail[0].userId;
-          this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
-        })
-        this.jobService.applyJob(this._currentJobId,"url",this._fullname,"45%",this._userId).subscribe()
-        console.log("done");
+        
 
 
 
