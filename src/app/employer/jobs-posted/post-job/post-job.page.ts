@@ -37,7 +37,7 @@ export class PostJobPage implements OnInit {
       }),
       description: new FormControl(null,{
         updateOn:'blur',
-        validators:[Validators.required,Validators.maxLength(500)]
+        validators:[Validators.required,Validators.maxLength(600)]
       }),
       skills:new FormControl(null,{
         updateOn:'blur',

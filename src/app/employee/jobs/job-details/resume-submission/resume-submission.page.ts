@@ -19,6 +19,10 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ResumeSubmissionPage implements OnInit {
+  private _currentJobId;
+  private _userId:string
+  private _fullname:string
+  
   accuracy:number = 0;
   jobskill:string = '';
   job:Job;
@@ -124,7 +128,12 @@ export class ResumeSubmissionPage implements OnInit {
   }
 
   submit(){
-    this.alertCtrl.create({
+  this.authService.userDetails.subscribe(userDetail=>{
+    this._userId=userDetail[0].userId;
+     this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
+   })
+  this.jobService.applyJobWithResume(this.jobid,this.file,this._fullname,this.accuracy).subscribe()
+  this.alertCtrl.create({
       header:'Success',
       message:'Your application has been submitted. You may now browse different jobs.',
       cssClass: 'success-alert-message',
@@ -133,9 +142,6 @@ export class ResumeSubmissionPage implements OnInit {
       }}]
     }).then(alertEl=>{
       alertEl.present();
-    })
-  }
-  
-
+    });
 }
-
+}
