@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subscription, take, tap } from 'rxjs';
 import { Images } from './app.model';
 import { HomeService } from './app.service';
 import { AuthService } from './auth/auth.service';
@@ -17,6 +17,7 @@ export class AppComponent {
   private authSub:Subscription;
   private previousAuthState=false;
   private userDetailSub:Subscription;
+  isModalOpen = false;
 
   firstname: string;
   lastname: string;
@@ -38,6 +39,36 @@ export class AppComponent {
 
 
   }
+
+  onSettings(isOpen:boolean){
+    this.isModalOpen = isOpen;
+  }
+
+  onDelete(){
+    let userId:string;
+     this.authService.userId.subscribe((UserId=>{
+      userId=UserId
+    }));
+this.alertController.create({
+  header:'Delete Account',
+  message:'Are you really want to delete account?',
+  buttons:[{text:'Yes',handler:()=>{
+    console.log(userId);
+
+    this.authService.deleteAccount(userId).subscribe(()=>{
+      this.onSettings(false);
+      this.authService.logout();
+
+    });
+
+
+  }},{text:'No'}]
+}).then(alertEl=>{
+  alertEl.present();
+})
+  }
+
+
   ngOnInit(): void {
     this.authSub=this.authService.userIsAuthenticated.subscribe(isAuth=>{
       if(!isAuth && this.previousAuthState!==isAuth){

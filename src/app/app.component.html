@@ -38,7 +38,7 @@
           <ion-card-subtitle style="font-size: 1.2em;">HELP & SUPPORT</ion-card-subtitle>
           <ion-menu-toggle>
             <ion-item lines="none" routerLink="/help-center">
-              <ion-icon slot="start" name="settings-outline"></ion-icon>
+              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
               <ion-label>Help Center</ion-label>
             </ion-item></ion-menu-toggle>
 
@@ -51,6 +51,10 @@
               <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
               <ion-label>About</ion-label>
             </ion-item>
+            <ion-item lines="none" (click)="onSettings(true)" button>
+              <ion-icon name="settings-outline" slot="start"></ion-icon>
+              <ion-label>Settings</ion-label>
+            </ion-item>
             <ion-item lines="none" (click)="onLogout()" button>
               <ion-icon name="exit" slot="start"></ion-icon>
               <ion-label>Logout</ion-label>
@@ -58,6 +62,34 @@
           </ion-menu-toggle>
         </ion-card-header>
       </ion-card>
+      <ion-modal [isOpen]="isModalOpen">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Settings</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="onSettings(false)">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+                  <ion-card (click)="onDelete()">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col>
+                    <ion-card-header>
+                      Delete Account
+                    </ion-card-header>
+                    <ion-card-content>
+                      Action cannot be undone
+                    </ion-card-content>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+                  </ion-card>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="main"></ion-router-outlet>

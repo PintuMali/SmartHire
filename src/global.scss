@@ -74,6 +74,26 @@
   font-family:aclonica,roboto,sans-serif;
 }
 
+.specialBackground{
+  background: linear-gradient(98.26deg, rgba(255, 255, 255, 0.4) 24.16%, rgba(255, 255, 255, 0.2) 95.88%);
+/* GlassEffect/Effects */
+
+box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.25);
+backdrop-filter: blur(20px);
+/* Note: backdrop-filter has minimal browser support */
+border-radius: 15px;
+color: #282828;
+border-top-color:rgba(50, 121, 208, 1);
+border-right-color: rgba(88, 126, 188, 0.25);
+border-bottom-color: rgba(221, 142, 120, 0.25);
+border-left: rgba(249, 145, 105, 1);
+}
+
 .ion-invalid.ion-touched ion-label{
   color: var(--ion-color-danger);
+}
+
+.back{
+  background: url(./assets/images/Loading-Background.svg) no-repeat center;
+  background-size: cover;
 }
