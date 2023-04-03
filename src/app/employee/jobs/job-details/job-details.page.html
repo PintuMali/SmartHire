@@ -3,16 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/employee/jobs"></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-title class="special2">Job-details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
 <ion-grid *ngIf="!isLoading">
   <ion-row class="ion-align-items-center">
     <ion-col size="10" class="ion-text-start">
@@ -32,20 +28,16 @@
   </ion-row>
   <ion-row>
     <ion-col size="5">
-      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobLocation}}</ion-text></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="location-outline"></ion-icon><ion-text>{{job.jobLocation}}</ion-text></ion-item>
     </ion-col>
     <ion-col size="5">
-  <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobSalary}} LPA</ion-text></ion-item>
+  <ion-item lines="none"><ion-icon slot="start" name="cash-outline"></ion-icon><ion-text>{{job.jobSalary}} LPA</ion-text></ion-item>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col size="5">
-      <ion-item lines="none"><ion-icon slot="start" name="chatbox-outline"></ion-icon><ion-text>{{job.jobSkills[0]}}</ion-text></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="checkmark-circle-outline"></ion-icon><ion-text>{{job.jobSkills[0]}}</ion-text></ion-item>
     </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-icon name="chatbox-outline"></ion-icon><ion-text>{{'150'}}Applications</ion-text></ion-item></ion-col>
-    <ion-col size="6"><ion-item lines="none" class="ion-float-end"><ion-buttons><ion-icon name="bookmark-outline"></ion-icon><ion-icon name="share-social-outline"></ion-icon></ion-buttons></ion-item></ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
@@ -117,7 +109,6 @@
   </ion-row>
   <ion-row>
     <ion-col size="6" class="ion-text-start"><ion-item lines="none"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text></ion-item></ion-col>
-    <ion-col size="6"><ion-item lines="none" class="ion-float-end"><ion-skeleton-text [animated]="true"></ion-skeleton-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-item></ion-col>
   </ion-row>
   <ion-row>
     <ion-col>

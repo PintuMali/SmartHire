@@ -10,18 +10,13 @@
       <ion-button routerLink="/employee/jobs" (click)="onSearchBarIconClick()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
-      <ion-button routerLink="/employee/jobs">
-        <ion-icon slot="icon-only" name="bookmark-outline"></ion-icon>
-      </ion-button>
-      <ion-button routerLink="/employee/jobs">
-        <ion-icon slot="icon-only" name="chatbox-outline"></ion-icon>
-      </ion-button>
     </ion-buttons>
     <ion-title class="special2">Jobs</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="back">
 <ion-card *ngFor="let job of filtered">
   <div *ngIf="!isLoading && filtered.length>0">
   <ion-card-header class="ion-no-padding ion-margin-top ion-margin-horizontal">
@@ -119,4 +114,5 @@
   </ion-card-content>
   </div>
   </ion-card>
+</div>
 </ion-content>

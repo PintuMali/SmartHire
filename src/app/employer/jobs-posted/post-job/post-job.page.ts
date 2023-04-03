@@ -28,7 +28,7 @@ export class PostJobPage implements OnInit {
       }),
       salary:new FormControl(null,{
         updateOn:'blur',
-        validators:[Validators.required,Validators.min(1)]
+        validators:[Validators.required,Validators.min(3)]
       }),
       deadline: new FormControl(null,{
         updateOn:'blur',
