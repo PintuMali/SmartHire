@@ -22,7 +22,7 @@ export class ResumeSubmissionPage implements OnInit {
   private _currentJobId;
   private _userId:string
   private _fullname:string
-  
+
   accuracy:number = 0;
   jobskill:string = '';
   job:Job;
@@ -37,9 +37,9 @@ export class ResumeSubmissionPage implements OnInit {
 
   @ViewChild('fileInput', {static: false})
   myFileInput: ElementRef;
-  
-  
-  
+
+
+
 
   constructor(private http:HttpClient,private authService:AuthService,private navCtrl:NavController,private jobService:JobsService, private alertCtrl:AlertController,private route: ActivatedRoute, private imageService:HomeService,private router:Router) {
     this.images=imageService.images;
@@ -47,7 +47,7 @@ export class ResumeSubmissionPage implements OnInit {
 
 
   ngOnInit() {
-    
+
     this.route.paramMap.subscribe(paramMap=>{
       if(!paramMap.has('jobId')){
         this.navCtrl.navigateBack('/employee/jobs/');
@@ -74,10 +74,8 @@ export class ResumeSubmissionPage implements OnInit {
     const fileName = this.file.name;
     if (fileName.endsWith('.docx') || fileName.endsWith('.pdf')) {
         this.fileaccepter = true;
-        console.log('Accepted file:', this.file);
     } else {
-        this.fileaccepter = false;
-        console.log('Invalid file type. Please select a docx or pdf file.');
+        alert('Invalid file type. Please select a docx or pdf file.');
     }
 }
 
@@ -104,7 +102,7 @@ export class ResumeSubmissionPage implements OnInit {
       });
     }
     else{
-        
+
       this.alertCtrl.create({
         header:'Invalid file format',
         message:'Only pdf and docx files are supported',

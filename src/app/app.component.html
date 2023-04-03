@@ -73,20 +73,69 @@
             </ion-toolbar>
           </ion-header>
           <ion-content>
-                  <ion-card (click)="onDelete()">
-                    <ion-grid>
-                      <ion-row>
-                        <ion-col>
-                    <ion-card-header>
-                      Delete Account
-                    </ion-card-header>
-                    <ion-card-content>
-                      Action cannot be undone
-                    </ion-card-content>
+                  <ion-item (click)="onDelete()" class="ion-margin-top">
+                    <ion-thumbnail>
+                      <ion-img src="../assets/images/glassBall.svg"></ion-img>
+                    </ion-thumbnail>
+              <ion-card-header>
+                Delete Account
+              </ion-card-header>
+              <ion-card-content>
+                Action cannot be undone
+              </ion-card-content>
+            </ion-item>
+            <ion-item (click)="onChangePassword(true)" class="ion-margin-top">
+              <ion-thumbnail>
+                <ion-img src="../assets/images/glassBall.svg"></ion-img>
+              </ion-thumbnail>
+        <ion-card-header>
+          Change Password
+        </ion-card-header>
+        <ion-card-content>
+          Click to change the password
+        </ion-card-content>
+      </ion-item>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+      <ion-modal [isOpen]="isModalOpen2">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Change Password</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="onChangePassword(false)">Close</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="8" offset="2" size-sm="6" offset-sm="3" size-md="4" offset-md="4" size-lg="4" offset-lg="4">
+                    <ion-img [src]="images[1].imageUrl"></ion-img>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-list>
+                    <ion-item>
+                      <ion-label position="floating">New Password</ion-label>
+                      <ion-input type="password" ngModel name="newPassword" required minlength="6" #newPasswordCtrl="ngModel" pattern="(?=.*[!@#$%^&*])(?=.*[0-9]).{6,}"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!newPasswordCtrl.valid&&newPasswordCtrl.touched" lines="none">
+                      Should contain at least one special character, number and be at least 6 characters long
+                    </ion-item>
+                  </ion-list>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-button type="submit" color="primary" expand="block" [disabled]="!f.valid">Submit</ion-button>
                   </ion-col>
                 </ion-row>
               </ion-grid>
-                  </ion-card>
+              </form>
           </ion-content>
         </ng-template>
       </ion-modal>

@@ -46,8 +46,6 @@ export class EmployeePage implements OnInit,OnDestroy {
     this.jobService.fetchJobs().subscribe({next:()=>{
       this.isLoading=false;
     },error:errorEl=>{
-      console.log(errorEl);
-
       this.alertCtrl.create({
         header:'An error occurred!',
         message:'Check Your Connection,try again later',
@@ -62,7 +60,6 @@ export class EmployeePage implements OnInit,OnDestroy {
 
   onMoreDetail(jobId:string){
     this.router.navigateByUrl('/employee/jobs/'+jobId);
-    console.log(jobId);
 
   }
   onCityClick(cityName:string,filter:string){
@@ -73,7 +70,6 @@ export class EmployeePage implements OnInit,OnDestroy {
   onCategoryClick(categoryId:string,filter:string){
     this.jobService.filter=filter
     this.router.navigateByUrl('/employee/filter/'+categoryId);
-    console.log(categoryId);
 
   }
   ngOnDestroy(): void {

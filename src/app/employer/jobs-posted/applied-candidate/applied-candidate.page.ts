@@ -40,15 +40,13 @@ export class AppliedCandidatePage implements OnInit {
           jobResumeUrl: response[key].jobResumeUrl,
           score: response[key].score
         }));
-        console.log(this.jobs);
       },
       (error) => {
-        console.log(error);
       }
     );
-    
+
   }
-    
+
   }
 
 

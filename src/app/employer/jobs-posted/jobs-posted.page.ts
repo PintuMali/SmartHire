@@ -32,7 +32,6 @@ export class JobsPostedPage implements OnInit,OnDestroy {
     this.jobsService.fetchEmployerJobs().subscribe({next:()=>{
       this.isLoading=false;
     },error:errorResp=>{
-      console.log(errorResp);
 
       this.alertCtrl.create({
         header:'An error occurred',

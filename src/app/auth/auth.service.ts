@@ -187,10 +187,15 @@ get token(){
   }),switchMap(()=>{
     return this.http.get(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users.json?orderBy="userId"&equalTo="${userId}"&auth=${fetchedToken}`);
   }),switchMap(respData=>{
-    console.log(Object.keys(respData)[0]);
 
     return this.http.delete(`https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/users/${Object.keys(respData)[0]}.json?auth=${fetchedToken}`)
     }))
+}
+
+changePassword(password:string){
+  return this.token.pipe(take(1),switchMap((token)=>{
+  return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebase.apiKey}`,{"idToken":token,"password":password,"returnSecureToken":true});
+    }));
 }
 
 verifyAccount(){

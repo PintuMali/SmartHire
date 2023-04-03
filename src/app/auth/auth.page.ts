@@ -48,8 +48,6 @@ constructor(private authService:AuthService,private router:Router,private loadin
                   this.authService.verifyAccount().subscribe(resData=>{
                     User=Object.values(Object.values(resData)[1])[0]
                     if(User.emailVerified===true){
-                      console.log('verified');
-
                     this.alertCtrl.create({
                       header:'Account created succesfully!',
                       message:'You can now log in with your new account',

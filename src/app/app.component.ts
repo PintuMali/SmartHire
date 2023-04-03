@@ -5,6 +5,7 @@ import { Subscription, take, tap } from 'rxjs';
 import { Images } from './app.model';
 import { HomeService } from './app.service';
 import { AuthService } from './auth/auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
   private previousAuthState=false;
   private userDetailSub:Subscription;
   isModalOpen = false;
+  isModalOpen2=false;
 
   firstname: string;
   lastname: string;
@@ -44,6 +46,28 @@ export class AppComponent {
     this.isModalOpen = isOpen;
   }
 
+  onSubmit(form:NgForm){
+    if(!form.valid){
+      return;
+    }
+    this.authService.changePassword(form.value.newPassword).subscribe(response=>{
+      this.alertController.create({
+        header:'Succesful',message:'Your password has been succesfully changed',buttons:[{text:'Okay',handler:()=>{
+          this.onChangePassword(false);
+          this.onSettings(false);
+          this.authService.logout();
+          this.alertController.create({header:'Login again',message:'Login again with new password',buttons:['Okay']})
+          .then(alertEl=>{
+            alertEl.present();
+          })
+        }}]
+      }).then(alertEl=>{
+        alertEl.present();
+      });
+
+    });
+  }
+
   onDelete(){
     let userId:string;
      this.authService.userId.subscribe((UserId=>{
@@ -53,7 +77,6 @@ this.alertController.create({
   header:'Delete Account',
   message:'Are you really want to delete account?',
   buttons:[{text:'Yes',handler:()=>{
-    console.log(userId);
 
     this.authService.deleteAccount(userId).subscribe(()=>{
       this.onSettings(false);
@@ -66,6 +89,10 @@ this.alertController.create({
 }).then(alertEl=>{
   alertEl.present();
 })
+  }
+
+  onChangePassword(isOpen:boolean){
+    this.isModalOpen2 = isOpen;
   }
 
 

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { title } from 'process';
-import { from, switchMap, tap } from 'rxjs';
+import {  switchMap, tap } from 'rxjs';
 import { JobsService } from 'src/app/employee/jobs.service';
 
 @Component({
@@ -67,11 +66,9 @@ export class PostJobPage implements OnInit {
       message:'Creating a job...'
     }).then(loadingEl=>{
       loadingEl.present();
-      console.log('Uploading Started');
 
       this.jobService.uploadImage(this.form.get('image').value).pipe(tap(data=>{
         imgUrl=data;
-        console.log(data);
 
 
       }),switchMap((data)=>{

@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireDatabaseModule} from '@angular/fire/compat/database';
 import {AngularFireStorageModule} from '@angular/fire/compat/storage'
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -15,7 +16,7 @@ import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule,HttpClientModule,AngularFireModule.initializeApp(environment.firebase),AngularFireDatabaseModule,AngularFireStorageModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [FormsModule,BrowserModule,HttpClientModule,AngularFireModule.initializeApp(environment.firebase),AngularFireDatabaseModule,AngularFireStorageModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
