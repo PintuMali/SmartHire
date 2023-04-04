@@ -47,7 +47,10 @@ export class ResumeSubmissionPage implements OnInit {
 
 
   ngOnInit() {
-
+    this.authService.userDetails.subscribe(userDetail=>{
+      this._userId=userDetail[0].userId;
+       this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
+     })
     this.route.paramMap.subscribe(paramMap=>{
       if(!paramMap.has('jobId')){
         this.navCtrl.navigateBack('/employee/jobs/');
@@ -93,7 +96,7 @@ export class ResumeSubmissionPage implements OnInit {
     this.http.post('http://furkan121.pythonanywhere.com/upload_file', formData).subscribe(
       (res: any) => {
         this.accuracy=res.Score;
-        if(this.accuracy>35){
+        if(this.accuracy>30){
           this.show=true;
         }
         else{
@@ -125,21 +128,56 @@ export class ResumeSubmissionPage implements OnInit {
     this.error = false;
   }
 
-  submit(){
-  this.authService.userDetails.subscribe(userDetail=>{
-    this._userId=userDetail[0].userId;
-     this._fullname=userDetail[0].firstName+ " "+userDetail[0].lastName
-   })
-  this.jobService.applyJobWithResume(this.jobid,this.file,this._fullname,this.accuracy).subscribe()
-  this.alertCtrl.create({
-      header:'Success',
-      message:'Your application has been submitted. You may now browse different jobs.',
-      cssClass: 'success-alert-message',
-      buttons:[{text:'Okay',handler:()=>{
-        this.router.navigate(['/employee']);
-      }}]
-    }).then(alertEl=>{
-      alertEl.present();
-    });
-}
+  async submit() {
+    try {
+      const token = await this.authService.token.pipe(take(1)).toPromise();
+      const url = `https://smarthire-1817a-default-rtdb.asia-southeast1.firebasedatabase.app/applied-jobs.json?orderBy="userId"&equalTo="${this._userId}"&auth=${token}`;
+  
+      let check = false; // Initialize the check variable to false
+  
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data) {
+            // Iterate over the results and check if there is an entry with the given jobId and userId
+            for (const key in data) {
+              if (data[key].jobId === this.jobid) {
+                console.log("you cannot reapply");
+                check = true;
+                this.alertCtrl.create({
+                  header:'Oops! ',
+                  message:'You have already applied to this job',
+                  buttons:[{
+                    text:'Okay',
+                    handler:() => {
+                      this.router.navigate(['/employee']);
+                    }
+                  }]
+                }).then(alertEl => {
+                  alertEl.present();
+                });
+                break;
+              }
+            }
+          }
+  
+          // Move the else statement outside the for loop
+          if (check == false) {
+            this.jobService.applyJobWithResume(this.jobid,this.file,this._fullname,this.accuracy).subscribe()
+            this.alertCtrl.create({
+              header:'Success',
+              message:'Your application has been submitted. You may now browse different jobs.',
+              cssClass: 'success-alert-message',
+              buttons:[{text:'Okay',handler:()=>{
+                this.router.navigate(['/employee']);
+              }}]
+            }).then(alertEl=>{
+              alertEl.present();
+            });
+          }
+        });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
